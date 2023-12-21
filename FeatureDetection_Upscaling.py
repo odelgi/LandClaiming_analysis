@@ -1,7 +1,7 @@
 
 ### -*- Demarcation detection -*-
 
-# Olivia del Giorgio
+# del Giorgio el al. 
 # Version: 2023
 # Script accessible on GitHub: Demarcation_analysis, odelgi
 
@@ -209,7 +209,7 @@ def DetectFeatures(col, row, topright, topleft):
     #### 1. Detect baseline ####
     out3_SATOthresh = np.where(out3_SATO >= 0.07, 1, 0) # Threshold sato output
 
-    # Hough line transformation:
+    # First Hough line transformation:
     rho = 1  # distance resolution in pixels of the Hough grid
     theta = np.pi / 350  # angular resolution in radians of the Hough grid
     threshold = 100  # minimum number of votes (intersections in Hough grid cell)
@@ -227,6 +227,7 @@ def DetectFeatures(col, row, topright, topleft):
     maj_y = MAJ.reshape(pixr*pixc) # flatten array
     lf_y = maj_y[maj_y==1] # select all demarcations
     other_y = np.zeros_like(lf_y) # select all non-demarcations
+  
     # x processing
     x_arr = np.dstack([out1_SATO, out2_SATO, out3_SATO, out4_SATO, out5_SATO]) # create stacked array 	with all texture inputs
     test = x_arr.reshape(pixr*pixc, x_arr.shape[2]) # flatten 3d array into 2d
@@ -277,7 +278,7 @@ def DetectFeatures(col, row, topright, topleft):
     # Threshold according to select probability
     RF_out = np.where(prob1_2d > 0.5, 1, 0) # np.where(condition[, x, y])  condition : When True, 	yield x, otherwise yield y.
 
-    #### 3. Processing RF output ####
+    #### 3. Processing the RF output ####
 
     # Morphological processing
     closed = closing(RF_out, footprint=square(2), out=None)
@@ -299,12 +300,12 @@ def DetectFeatures(col, row, topright, topleft):
     # Obtain coded output (Morphological processing round 2)
     ALL_clean = RemoveSmall(line_eroded,150) # remove according to area threshold
     ALL_clean = closing(ALL_clean, footprint=square(3), out=None)
-    MAJOR = remove_small_holes(ALL_clean, area_threshold=40, connectivity=0, in_place=False, 		out=None)
+    MAJOR = remove_small_holes(ALL_clean, area_threshold=40, connectivity=0, in_place=False, out=None)
     MAJOR_clean = RemoveShort(MAJOR,50) # remove according to length threshold
     CODED = MAJOR_clean + ALL_clean
     return CODED
 
-"""## Parallel processing"""
+#### Parallel processing ####
 
 # ####################################### PROTECT MAIN LOOP FOR PARALLEL PROCESSING ########################### #
 if __name__ == '__main__':
@@ -362,10 +363,8 @@ if __name__ == '__main__':
     # Write out each window output to the master tile output
     #...
 
-
 #### 3. Write out final file to disk
 CopyRasterToDisk(outRas, cols, rows, topright, topleft, gt, pr, type, outName)
-
 
 # ##################################### END TIME-COUNT AND PRINT TIME STATS#################################### #
 print("")
