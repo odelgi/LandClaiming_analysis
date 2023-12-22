@@ -6,6 +6,8 @@
 // author: Olivia del Giorgio | olivia.delgiorgio@mail.mcgill.ca
 // Available on Github (odelgi)
 
+// To run on Google Earth Engine's code editor (https://code.earthengine.google.com/)
+
 // LandTrendr package: Justin Braaten, Zhiqiang Yang, Robert Kennedy
 // parameter definitions: https://emapr.github.io/LT-GEE/api.html#getchangemap
 
@@ -38,6 +40,8 @@ var PRY_HUMIDchaco = ee.FeatureCollection('projects/ee-oliviadelgiorgio/assets/P
 var PRY_DRYchaco = ee.FeatureCollection('projects/ee-oliviadelgiorgio/assets/PRY_DRYchaco');
 
 // --- Demarcation mask ---
+
+//Forest demarcations subdivided by regions for ease of export
 var dem_ARGdry1 = ee.Image('projects/ee-oliviadelgiorgio/assets/dem_ARGdry1');
 var dem_ARGdry2 = ee.Image('projects/ee-oliviadelgiorgio/assets/dem_ARGdry2');
 var dem_ARGdry3 = ee.Image('projects/ee-oliviadelgiorgio/assets/dem_ARGdry3');
