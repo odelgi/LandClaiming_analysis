@@ -1,5 +1,5 @@
 """
--*- Code to generate comparison statistics between claiming metrics and deforestation metrics (Baumann et al. 2022) -*-
+-*- Code to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable -*-
 
 del Giorgio et al. 
 ArcGIS Pro version X
