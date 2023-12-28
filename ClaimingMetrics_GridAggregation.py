@@ -2,7 +2,7 @@
 -*- Code to generate claiming metrics from demarcation datase -*-
 
 del Giorgio et al. 
-ArcGIS Pro version X
+ArcGIS Pro version 3.0.3
 2023-12-19 15:01:23
 
 5 metrics produced:
