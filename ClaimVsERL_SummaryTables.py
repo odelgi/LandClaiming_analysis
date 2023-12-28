@@ -2,7 +2,7 @@
 -*- Code to generate summary statistics comparing claiming and deforestation metrics -*-
 
 del Giorgio et al. 
-ArcGIS Pro version X
+ArcGIS Pro version 3.0.3
 2023-12-19 15:05:23
 
 """
