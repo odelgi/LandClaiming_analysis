@@ -2,7 +2,7 @@
 -*- Code to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable -*-
 
 del Giorgio et al. 
-ArcGIS Pro version X
+ArcGIS Pro version 3.0.3
 2023-12-19 15:02:19
 
 """
