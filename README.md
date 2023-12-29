@@ -15,7 +15,7 @@ This repository accompanies the following peer-reviewed publication:
 #### Software prerequisites
 * 64-bit Windows 10 
 * [Python](https://www.python.org/downloads/) VERSION 3.1
-* [Jupyter Notebook] (https://docs.jupyter.org/en/latest/)
+* [Jupyter Notebook](https://docs.jupyter.org/en/latest/)
 * [ArcGIS Pro](https://www.esri.com/en-us/arcgis/products/arcgis-pro/overview) VERSION 3.0.3
 * [Google Earth Engine Code Editor](https://code.earthengine.google.com/)
 
@@ -34,8 +34,8 @@ This repository accompanies the following peer-reviewed publication:
 * [Sentinel 2 imagery](https://dataspace.copernicus.eu/) - Level-2A
 * Gran Chaco-specific data layers:
    * Fields (cropland and pasture) and 'other' land covers (urban areas, wetlands etc.) - [Data available upon request](https://iopscience.iop.org/article/10.1088/1748-9326/ac8b9a) 
-   * [Argentine geospatial data repository]() (for road and water masks)
-   * [Bolivian geospatial data repository]() (for road and water masks)
+   * [Argentine geospatial data repository](https://www.ign.gob.ar/NuestrasActividades/InformacionGeoespacial/CapasSIG) (for road and water masks)
+   * [Bolivian geospatial data repository](https://geo.gob.bo/) (for road and water masks)
    * [Paraguayan roads](https://www.globio.info/what-is-globio) (national data not available)
    * [Paraguyan water bodies](https://www.hydrosheds.org/products/hydrorivers) (national data not available)
    * Smallholder homestead point data - [Data available upon request](https://www.pnas.org/doi/10.1073/pnas.2100436118)
