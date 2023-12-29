@@ -1,13 +1,13 @@
 # Demarcation_analysis
 
-## Title
+## An approach to map land claiming in agricultural commodity frontiers
 
 This repository accompanies the following peer-reviewed publication: 
 [del Giorgio O., Baumann M., Hostert P., Kuemmerle T., le Polain de Waroux Y. (date) Title. Journal](Link).
 
 ## Project description
 [Project description]    
-
+#### Approach summary
 ![MainApproachFigure_V2](https://github.com/odelgi/Demarcation_analysis/assets/61065884/e0d2f379-0fa2-406e-b340-1627fc543708)
 
 ## Getting Started
@@ -16,7 +16,7 @@ This repository accompanies the following peer-reviewed publication:
 * 64-bit Windows 10 
 * [Python](https://www.python.org/downloads/) VERSION 3.1
 * [Jupyter Notebook](https://docs.jupyter.org/en/latest/)
-* [ArcGIS Pro](https://www.esri.com/en-us/arcgis/products/arcgis-pro/overview) VERSION 3.0.3
+* [ESRI ArcGIS Pro](https://www.esri.com/en-us/arcgis/products/arcgis-pro/overview) VERSION 3.0.3 (including the Spatial Analyst lisence extension)
 * [Google Earth Engine Code Editor](https://code.earthengine.google.com/)
 
 #### Hardware recommendation
@@ -54,17 +54,36 @@ The analysis requires that the scripts be run in the following order:
 8. [ClaimVsERL_SummaryTables.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimVsERL_SummaryTables.py) to generate summary statistics comparing claiming and deforestation metrics.
 9. [file.py](link) Smallholder impact.
 
-### Workflow detailed
+### Detailed workflow
 
-## Updates since peer-reviewed article publication
+1. Linear feature detection
+![DemarcationDetection_ApproachFigure](https://github.com/odelgi/Demarcation_analysis/assets/61065884/54554c50-4430-4b7f-aa06-f98410e4f3a3)
+
+2. Isolating forest demarcations and assigning each segment a year of appearance
+![DemPrep_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/1ad6f999-3424-499e-b060-d37a0cb0f8fc)
+
+3. Generate claiming metrics
+![MetricGridAggregation_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/658f1848-4592-4650-81fd-69785b8bc7bb)
+
+4. Calculate hotspots
+
+5. Relate claiming and deforestation metrics
+![RelatingMetrics_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/d1237ccc-367d-407a-854e-3226f6419042)
+
+6. Generate summary statistics comparing claiming and deforestation metrics
+![ClaimVsERL summarytables](https://github.com/odelgi/Demarcation_analysis/assets/61065884/cbd56473-2516-46e4-931a-4a40a5a76a51)
+
+7. Assess smallholder impact
+
+
+### Updates since peer-reviewed article publication
 None
 
-## Code developer
+## Code developers
 * [Olivia del Giorgio](https://github.com/odelgi)
+* Linear feature detection upscaling [Matthias Baumann](https://github.com/matthias-baumann)
 
-## License
-
-## Acknowledgments
-
+### Acknowledgments
+We thank S. Schulz and C. Dammann and J. Vacirca for their administrative support.
 
 
