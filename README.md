@@ -7,7 +7,8 @@ This repository accompanies the following peer-reviewed publication
 
 ## Project description
 [Project description]    
-[Method diagram]
+
+![MainApproachFigure_V2](https://github.com/odelgi/Demarcation_analysis/assets/61065884/e0d2f379-0fa2-406e-b340-1627fc543708)
 
 ## Getting Started
 #### Software prerequisites (what we ran this on)
