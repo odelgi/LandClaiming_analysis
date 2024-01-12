@@ -66,10 +66,10 @@ The analysis requires that the scripts be run in the following order:
 ![DemPrep_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/1ad6f999-3424-499e-b060-d37a0cb0f8fc)
 
 3. Genarate reference demarcations for validation
-![Validation](https://github.com/odelgi/Demarcation_analysis/assets/61065884/f662d33c-c702-4790-8066-4ec3e2edd7d4)
+<img width="1158" alt="Validation" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/5e0229ba-cb67-4546-b20c-901fc67060b4">
 
 4. Linear correspondence analysis
-![LCA](https://github.com/odelgi/Demarcation_analysis/assets/61065884/d9ef60f7-5fa6-4669-804a-a963a794fe36)
+<img width="781" alt="LCA" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/a77dc8a4-1673-4cf6-a11f-1c36c85ecabf">
 
 5. Generate claiming metrics
 ![MetricGridAggregation_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/658f1848-4592-4650-81fd-69785b8bc7bb)
