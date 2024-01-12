@@ -26,8 +26,10 @@ This repository accompanies the following peer-reviewed publication:
     * Samsung SSD 970 ECO Plus 500GB UPDATE
    * Linear feature detection - Run time for Gran Chaco = 
 
-* All other analysis components (i.e., steps 3-10 below) were run on a workstation with the following specs:
-   *    
+* All other analysis components (i.e., steps 3-11 below) were run on a workstation with the following specs:
+   * Windows 10 Pro (Version 22H2) - 64 bit (OS build 19045.3930)
+   * Intel® Core™ i7-10700 CPU @ 2.90GHz
+   * 32 GB RAM
 
 #### Input data
 * [Sentinel 2 imagery](https://dataspace.copernicus.eu/) - Level-2A
@@ -46,12 +48,14 @@ The analysis requires that the scripts be run in the following order:
 1. [FeatureDetection_Simple.ipynb](https://github.com/odelgi/Demarcation_analysis/blob/main/FeatureDetection_Simple.ipynb) to test linear feature detection parameters .
 2. [FeatureDetection_Upscaling.py](https://github.com/odelgi/Demarcation_analysis/blob/main/FeatureDetection_Upscaling.py) to upscale the linear feature detection analysis.
 3. [LandTrendr_YOD](https://github.com/odelgi/Demarcation_analysis/blob/main/LandTrendr_YOD) GEE code.editor script to extract the year of detection for pixels within linear feature mask.
-4. [PrepDemarcations.py]([link](https://github.com/odelgi/Demarcation_analysis/blob/main/PrepDemarcations.py)) to isolate forest demarcations from all linear features and assign each segment a year of detection.
-5. [ClaimingMetrics_GridAggregation.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingMetrics_GridAggregation.py) to generate claiming metrics from demarcation datase.
-6. [file.py](link) Hotspots.
-7. [RelatingMetrics.py](https://github.com/odelgi/Demarcation_analysis/blob/main/RelatingMetrics.py) to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable.
-8. [ClaimVsERL_SummaryTables.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimVsERL_SummaryTables.py) to generate summary statistics comparing claiming and deforestation metrics.
-9. [file.py](link) Smallholder impact.
+4. [PrepDemarcations.py](https://github.com/odelgi/Demarcation_analysis/blob/main/PrepDemarcations.py) to isolate forest demarcations from all linear features and assign each segment a year of detection.
+5. [Validation.py](https://github.com/odelgi/Demarcation_analysis/blob/main/Validation.py) to produce the demarcation reference dataset for validation.
+6. [LinearCorrespondenceAnalysis.py](https://github.com/odelgi/Demarcation_analysis/blob/main/LinearCorrespondenceAnalysis.py) to calculate the linear correspondence between the extracted and reference demarcations.
+7. [ClaimingMetrics_GridAggregation.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingMetrics_GridAggregation.py) to generate claiming metrics from demarcation datase.
+8. [file.py](link) Hotspots.
+9. [RelatingMetrics.py](https://github.com/odelgi/Demarcation_analysis/blob/main/RelatingMetrics.py) to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable.
+10. [ClaimVsERL_SummaryTables.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimVsERL_SummaryTables.py) to generate summary statistics comparing claiming and deforestation metrics.
+11. [file.py](link) Smallholder impact.
 
 ### Detailed workflow
 
@@ -61,18 +65,24 @@ The analysis requires that the scripts be run in the following order:
 2. Isolating forest demarcations and assigning each segment a year of appearance
 ![DemPrep_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/1ad6f999-3424-499e-b060-d37a0cb0f8fc)
 
-3. Generate claiming metrics
+3. Genarate reference demarcations for validation
+![Validation](https://github.com/odelgi/Demarcation_analysis/assets/61065884/f662d33c-c702-4790-8066-4ec3e2edd7d4)
+
+4. Linear correspondence analysis
+![LCA](https://github.com/odelgi/Demarcation_analysis/assets/61065884/d9ef60f7-5fa6-4669-804a-a963a794fe36)
+
+5. Generate claiming metrics
 ![MetricGridAggregation_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/658f1848-4592-4650-81fd-69785b8bc7bb)
 
-4. Calculate hotspots
+6. Calculate hotspots
 
-5. Relate claiming and deforestation metrics
+7. Relate claiming and deforestation metrics
 ![RelatingMetrics_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/d1237ccc-367d-407a-854e-3226f6419042)
 
-6. Generate summary statistics comparing claiming and deforestation metrics
+8. Generate summary statistics comparing claiming and deforestation metrics
 ![ClaimVsERL summarytables](https://github.com/odelgi/Demarcation_analysis/assets/61065884/cbd56473-2516-46e4-931a-4a40a5a76a51)
 
-7. Assess smallholder impact
+9. Assess smallholder impact
 
 
 ### Updates since peer-reviewed article publication
