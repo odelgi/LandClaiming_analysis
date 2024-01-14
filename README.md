@@ -52,7 +52,7 @@ The analysis requires that the scripts be run in the following order:
 5. [Validation.py](https://github.com/odelgi/Demarcation_analysis/blob/main/Validation.py) to produce the demarcation reference dataset for validation.
 6. [LinearCorrespondenceAnalysis.py](https://github.com/odelgi/Demarcation_analysis/blob/main/LinearCorrespondenceAnalysis.py) to calculate the linear correspondence between the extracted and reference demarcations.
 7. [ClaimingMetrics_GridAggregation.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingMetrics_GridAggregation.py) to generate claiming metrics from demarcation datase.
-8. [file.py](link) Hotspots.
+8. [ClaimingPatterns.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingPatterns.py) to assign aggregate pixels to the claiming pattern typology.
 9. [RelatingMetrics.py](https://github.com/odelgi/Demarcation_analysis/blob/main/RelatingMetrics.py) to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable.
 10. [ClaimVsERL_SummaryTables.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimVsERL_SummaryTables.py) to generate summary statistics comparing claiming and deforestation metrics.
 11. [file.py](link) Smallholder impact.
@@ -74,15 +74,15 @@ The analysis requires that the scripts be run in the following order:
 5. Generate claiming metrics
 ![MetricGridAggregation_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/658f1848-4592-4650-81fd-69785b8bc7bb)
 
-6. Calculate hotspots
+6. Assign aggregate pixels to claiming pattern typology
 
-7. Relate claiming and deforestation metrics
+8. Relate claiming and deforestation metrics
 ![RelatingMetrics_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/d1237ccc-367d-407a-854e-3226f6419042)
 
-8. Generate summary statistics comparing claiming and deforestation metrics
+9. Generate summary statistics comparing claiming and deforestation metrics
 ![ClaimVsERL summarytables](https://github.com/odelgi/Demarcation_analysis/assets/61065884/cbd56473-2516-46e4-931a-4a40a5a76a51)
 
-9. Assess smallholder impact
+10. Assess smallholder impact
 
 
 ### Updates since peer-reviewed article publication
