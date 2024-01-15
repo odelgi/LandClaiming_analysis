@@ -1,3 +1,6 @@
+// Code to extract Sentinel 2 imagery (for single year) over randomly selected hexagons for the demarcation validation.
+// del Giorgio et al.
+
 //========== Required packages ==========
 
 // * Google Earth Engine API
