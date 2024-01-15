@@ -50,12 +50,14 @@ The analysis requires that the scripts be run in the following order:
 3. [LandTrendr_YOD](https://github.com/odelgi/Demarcation_analysis/blob/main/LandTrendr_YOD) GEE code.editor script to extract the year of detection for pixels within linear feature mask.
 4. [PrepDemarcations.py](https://github.com/odelgi/Demarcation_analysis/blob/main/PrepDemarcations.py) to isolate forest demarcations from all linear features and assign each segment a year of detection.
 5. [Validation.py](https://github.com/odelgi/Demarcation_analysis/blob/main/Validation.py) to produce the demarcation reference dataset for validation.
-6. [LinearCorrespondenceAnalysis.py](https://github.com/odelgi/Demarcation_analysis/blob/main/LinearCorrespondenceAnalysis.py) to calculate the linear correspondence between the extracted and reference demarcations.
-7. [ClaimingMetrics_GridAggregation.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingMetrics_GridAggregation.py) to generate claiming metrics from demarcation datase.
-8. [ClaimingPatterns.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingPatterns.py) to assign aggregate pixels to the claiming pattern typology.
-9. [RelatingMetrics.py](https://github.com/odelgi/Demarcation_analysis/blob/main/RelatingMetrics.py) to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable.
-10. [ClaimVsERL_SummaryTables.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimVsERL_SummaryTables.py) to generate summary statistics comparing claiming and deforestation metrics.
-11. [file.py](link) Smallholder impact.
+6. [Landsat_GEEValidation.js](https://github.com/odelgi/Demarcation_analysis/blob/main/Landsat_GEEValidation.js) to extract Landsat 5 and 7 imagery (for 5 period) over randomly selected hexagons for the demarcation validation.
+7. [S2_GEEValidation.js](https://github.com/odelgi/Demarcation_analysis/blob/main/S2_GEEValidation.js) to extract Sentinel 2 imagery (for the year of detection) over randomly selected hexagons for the demarcation validation.
+8. [LinearCorrespondenceAnalysis.py](https://github.com/odelgi/Demarcation_analysis/blob/main/LinearCorrespondenceAnalysis.py) to calculate the linear correspondence between the extracted and reference demarcations.
+9. [ClaimingMetrics_GridAggregation.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingMetrics_GridAggregation.py) to generate claiming metrics from demarcation datase.
+10. [ClaimingPatterns.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingPatterns.py) to assign aggregate pixels to the claiming pattern typology.
+11. [RelatingMetrics.py](https://github.com/odelgi/Demarcation_analysis/blob/main/RelatingMetrics.py) to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable.
+12. [ClaimVsERL_SummaryTables.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimVsERL_SummaryTables.py) to generate summary statistics comparing claiming and deforestation metrics.
+13. [file.py](link) Smallholder impact.
 
 ### Detailed workflow
 
