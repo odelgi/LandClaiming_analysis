@@ -75,6 +75,7 @@ The analysis requires that the scripts be run in the following order:
 ![MetricGridAggregation_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/658f1848-4592-4650-81fd-69785b8bc7bb)
 
 6. Assign aggregate pixels to claiming pattern typology
+<img width="629" alt="ClaimingPatternModel" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/d5038358-b9af-4013-bf5c-1dcc4a777787">
 
 8. Relate claiming and deforestation metrics
 ![RelatingMetrics_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/d1237ccc-367d-407a-854e-3226f6419042)
