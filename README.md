@@ -26,7 +26,7 @@ This repository accompanies the following peer-reviewed publication:
     * Samsung SSD 970 ECO Plus 500GB UPDATE
    * Linear feature detection - Run time for Gran Chaco = 
 
-* All other analysis components (i.e., steps 3-11 below) were run on a workstation with the following specs:
+* All other analysis components (i.e., steps 3-13 below) were run on a workstation with the following specs:
    * Windows 10 Pro (Version 22H2) - 64 bit (OS build 19045.3930)
    * Intel® Core™ i7-10700 CPU @ 2.90GHz
    * 32 GB RAM
@@ -83,10 +83,10 @@ The analysis requires that the scripts be run in the following order:
 ![RelatingMetrics_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/d1237ccc-367d-407a-854e-3226f6419042)
 
 9. Generate summary statistics comparing claiming and deforestation metrics
-![ClaimVsERL summarytables](https://github.com/odelgi/Demarcation_analysis/assets/61065884/cbd56473-2516-46e4-931a-4a40a5a76a51)
+<img width="1089" alt="ClaimVsERL_summarytables" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/71a6b02e-ef1e-4340-a492-f821750955f3">
 
 10. Generate hexagonal grid over which to compare the claiming metrics and the proportion of smallholder puestos disappeared by 2018
-
+<img width="784" alt="DisappearedPuestosChoropleth" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/59f9094c-e522-4c5b-9337-fd19fde344bf">
 
 ### Updates since peer-reviewed article publication
 None
