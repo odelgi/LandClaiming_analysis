@@ -57,7 +57,7 @@ The analysis requires that the scripts be run in the following order:
 10. [ClaimingPatterns.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingPatterns.py) to assign aggregate pixels to the claiming pattern typology.
 11. [RelatingMetrics.py](https://github.com/odelgi/Demarcation_analysis/blob/main/RelatingMetrics.py) to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable.
 12. [ClaimVsERL_SummaryTables.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimVsERL_SummaryTables.py) to generate summary statistics comparing claiming and deforestation metrics.
-13. [DisappearedPuestosChoropleth.py](https://github.com/odelgi/Demarcation_analysis/blob/main/DisappearedPuestosChoropleth.py) to compare claiming metrics with smallholder puesto disappearance (data from Levers et al. 2022).
+13. [DisappearedPuestosChoropleth.py](https://github.com/odelgi/Demarcation_analysis/blob/main/DisappearedPuestosChoropleth.py) to compare claiming metrics with smallholder puesto disappearance (data from Levers et al. 2021).
 
 ### Detailed workflow
 
