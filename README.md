@@ -74,7 +74,7 @@ The analysis requires that the scripts be run in the following order:
 <img width="781" alt="LCA" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/a77dc8a4-1673-4cf6-a11f-1c36c85ecabf">
 
 5. Generate claiming metrics
-![MetricGridAggregation_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/658f1848-4592-4650-81fd-69785b8bc7bb)
+<img width="896" alt="MetricGridAggregation_DensCorrected" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/034a860c-336a-46e3-86b9-512bf41e9ef0">
 
 6. Assign aggregate pixels to claiming pattern typology
 <img width="629" alt="ClaimingPatternModel" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/d5038358-b9af-4013-bf5c-1dcc4a777787">
