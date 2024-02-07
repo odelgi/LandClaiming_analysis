@@ -65,7 +65,7 @@ The analysis requires that the scripts be run in the following order:
 ![DemarcationDetection_ApproachFigure](https://github.com/odelgi/Demarcation_analysis/assets/61065884/54554c50-4430-4b7f-aa06-f98410e4f3a3)
 
 2. Isolating forest demarcations and assigning each segment a year of appearance
-![DemPrep_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/1ad6f999-3424-499e-b060-d37a0cb0f8fc)
+![Dem_PrepUPDATED](https://github.com/odelgi/Demarcation_analysis/assets/61065884/bcd289b1-f428-4bc0-8cbc-cd7c412b8f45)
 
 3. Genarate reference demarcations for validation
 <img width="1158" alt="Validation" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/5e0229ba-cb67-4546-b20c-901fc67060b4">
