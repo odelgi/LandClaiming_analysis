@@ -7,14 +7,13 @@ ArcGIS Pro version 3.0.3
 
 5 metrics produced:
     1. Claiming density (unweighted)
-    2. Claiming density (weighted)
+    2. Claiming density (corrected)
     3. Peak claiming period
     4. Last claiming activity
     5. Claiming speed
 
 """
 import arcpy
-from arcpy.sa import *
 from arcpy.sa import *
 from arcpy.sa import *
 
@@ -24,94 +23,22 @@ def MetricsGridAggregation():  # Metrics Grid Aggregation
     arcpy.env.overwriteOutput = False
 
     arcpy.ImportToolbox(r"c:\program files\arcgis\pro\Resources\ArcToolbox\toolboxes\Data Management Tools.tbx")
-    Demarcations = "D:\\GIS_Chapter1\\Demarcation_analysis\\MetricsAnalysis_model\\Inputs\\DemFINAL_Input.gdb\\dem_YOD1985_final"
-    Fields_Polygon = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Inputs\\LandCover_InputMasks.gdb\\Fields_Polygon"
-    LC_Other_Polygon = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Inputs\\LandCover_InputMasks.gdb\\LC_Other_polygon"
-    Input_true_raster_or_constant_value = 0
-    TotalCellsMask = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Inputs\\LandCover_InputMasks.gdb\\TotalCellsMask"
-    ZonalStats_demSUM = arcpy.Raster("ZonalStats_demSUM")
-    Gran_Chaco_Limit = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Inputs\\LandCover_InputMasks.gdb\\GranChaco"
-    Gran_Chaco_Limit_2_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Inputs\\LandCover_InputMasks.gdb\\GranChaco"
-    ZonalStats_masksSUM_CORRECTED = arcpy.Raster("ZonalStats_masksSUM_CORRECTED")
-    ZonalStats_totalSUM = arcpy.Raster("ZonalStats_totalSUM")
-    GranChaco = "GranChaco"
+    Grid = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\Grid"
+    Demarcations = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Dem_FINAL.gdb\\dem_YOD1985_FILTERED1200"
+    Gran_Chaco_Limit_2_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Inputs\\LandCover_InputMasks.gdb\\GranChaco"
+    GranChaco = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Inputs\\LandCover_InputMasks.gdb\\GranChaco"
+    Fields_Polygon = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Inputs\\LandCover_InputMasks.gdb\\Fields_Polygon_Chaco"
+    LC_Other_Polygon = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Inputs\\LandCover_InputMasks.gdb\\LC_Other_polygon_Chaco"
+    TotalCellsMask = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Inputs\\LandCover_InputMasks.gdb\\TotalCellsMask"
 
     # Process: Generate Tessellation (Generate Tessellation) (management)
     GenerateTessellation = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\GenerateTessellation"
-    arcpy.management.GenerateTessellation(Output_Feature_Class=GenerateTessellation, Extent="-67.6921933706275 -33.8012113011605 -55.7671398818405 -17.6139385997885 GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]", Shape_Type="SQUARE", Size="100 SquareKilometers", Spatial_Reference="GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]];-400 -400 1000000000;-100000 10000;-100000 10000;8.98315284119521E-09;0.001;0.001;IsHighPrecision")
-
-    # Process: Copy Features (Copy Features) (management)
-    Grid_density_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\Grid_density"
-    arcpy.management.CopyFeatures(in_features=GenerateTessellation, out_feature_class=Grid_density_, config_keyword="", spatial_grid_1=None, spatial_grid_2=None, spatial_grid_3=None)
-
-    # Process: Polyline to Raster - Density (Polyline to Raster) (conversion)
-    dem_footprint_raster = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\dem_footprint_raster"
-    arcpy.conversion.PolylineToRaster(in_features=Demarcations, value_field="DEM", out_rasterdataset=dem_footprint_raster, cell_assignment="MAXIMUM_LENGTH", priority_field="NONE", cellsize="D:\\GIS_Chapter1\\Demarcation_analysis\\PrepDemarcations_model\\Model_inputs\\GEE_LandTrendr_YOD.gdb\\MOSAIC_TCW_yod1985", build_rat="BUILD")
-
-    # Process: Zonal Statistics - Sum (Dem) (Zonal Statistics) (sa)
-    dem_SUM = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\ZonalStats_demSUM"
-    Zonal_Statistics_Sum_Dem_ = dem_SUM
-    dem_SUM = arcpy.sa.ZonalStatistics(in_zone_data=Grid_density_, zone_field="GRID_ID", in_value_raster=dem_footprint_raster, statistics_type="SUM", ignore_nodata="DATA", process_as_multidimensional="CURRENT_SLICE", percentile_value=90, percentile_interpolation_type="AUTO_DETECT", circular_calculation="ARITHMETIC", circular_wrap_value=360)
-    dem_SUM.save(Zonal_Statistics_Sum_Dem_)
-
-
-    # Process: Merge (Merge) (management)
-    merged = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\Fields_Other_Merge"
-    arcpy.management.Merge(inputs=[Fields_Polygon, LC_Other_Polygon], output=merged, field_mappings="Id \"Id\" true true false 4 Long 0 0,First,#,Fields_Polygon_Chaco,Id,-1,-1;gridcode \"gridcode\" true true false 4 Long 0 0,First,#,Fields_Polygon_Chaco,gridcode,-1,-1;Shape_Length \"Shape_Length\" false true true 8 Double 0 0,First,#,Fields_Polygon_Chaco,Shape_Length,-1,-1;Shape_Area \"Shape_Area\" false true true 8 Double 0 0,First,#,Fields_Polygon_Chaco,Shape_Area,-1,-1", add_source="NO_SOURCE_INFO")
-
-    # Process: Polygon to Raster - Mask (Polygon to Raster) (conversion)
-    mask_raster = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\TotalMask_raster"
-    with arcpy.EnvManager(cellSize=dem_footprint_raster, extent=dem_footprint_raster, snapRaster=dem_footprint_raster):
-        arcpy.conversion.PolygonToRaster(in_features=merged, value_field="gridcode", out_rasterdataset=mask_raster, cell_assignment="CELL_CENTER", priority_field="NONE", cellsize=dem_footprint_raster, build_rat="BUILD")
-
-    # Process: Zonal Statistics - Sum (Mask) (Zonal Statistics) (sa)
-    with_null = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\ZonalStats_maskSUM"
-    Zonal_Statistics_Sum_Mask_ = with_null
-    with_null = arcpy.sa.ZonalStatistics(in_zone_data=Grid_density_, zone_field="GRID_ID", in_value_raster=mask_raster, statistics_type="SUM", ignore_nodata="DATA", process_as_multidimensional="CURRENT_SLICE", percentile_value=90, percentile_interpolation_type="AUTO_DETECT", circular_calculation="ARITHMETIC", circular_wrap_value=360)
-    with_null.save(Zonal_Statistics_Sum_Mask_)
-
-
-    # Process: Is Null (Is Null) (sa)
-    null_identified = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\ZonalStats_maskSUM_IsNull"
-    Is_Null = null_identified
-    null_identified = arcpy.sa.IsNull(in_raster=with_null)
-    null_identified.save(Is_Null)
-
-
-    # Process: Con (Con) (sa)
-    mask_SUM_CORRECTED = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\ZonalStats_masksSUM_CORRECTED"
-    Con = mask_SUM_CORRECTED
-    mask_SUM_CORRECTED = arcpy.sa.Con(in_conditional_raster=null_identified, in_true_raster_or_constant=Input_true_raster_or_constant_value, in_false_raster_or_constant=with_null, where_clause="Value = 1")
-    mask_SUM_CORRECTED.save(Con)
-
-
-    # Process: Polygon to Raster - Total (Polygon to Raster) (conversion)
-    total_raster = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\TotalCells_raster"
-    with arcpy.EnvManager(extent=dem_footprint_raster, snapRaster=dem_footprint_raster):
-        arcpy.conversion.PolygonToRaster(in_features=TotalCellsMask, value_field="OBJECTID", out_rasterdataset=total_raster, cell_assignment="CELL_CENTER", priority_field="NONE", cellsize=dem_footprint_raster, build_rat="BUILD")
-
-    # Process: Zonal Statistics - Sum (Total) (Zonal Statistics) (sa)
-    total_SUM = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\ZonalStats_totalSUM"
-    Zonal_Statistics_Sum_Total_ = total_SUM
-    total_SUM = arcpy.sa.ZonalStatistics(in_zone_data=Grid_density_, zone_field="GRID_ID", in_value_raster=total_raster, statistics_type="SUM", ignore_nodata="DATA", process_as_multidimensional="CURRENT_SLICE", percentile_value=90, percentile_interpolation_type="AUTO_DETECT", circular_calculation="ARITHMETIC", circular_wrap_value=360)
-    total_SUM.save(Zonal_Statistics_Sum_Total_)
-
-
-    # Process: Clip Unweighted Density (Clip Raster) (management)
-    density_uneweighted_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\Density_unweighted"
-    arcpy.management.Clip(in_raster=ZonalStats_demSUM, rectangle="-67.7200854859564 -33.8686498677971 -55.7623294678306 -17.54059819585", out_raster=density_uneweighted_, in_template_dataset=Gran_Chaco_Limit, nodata_value="2147483647", clipping_geometry="ClippingGeometry", maintain_clipping_extent="NO_MAINTAIN_EXTENT")
-    density_uneweighted_ = arcpy.Raster(density_uneweighted_)
-
-    # Process: Reclassify Density - Natural Breaks (Reclassify) (sa)
-    density_unweighted_natural_classes = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\Density_Unweighted_NaturalClasses"
-    Reclassify_Density_Natural_Breaks = density_unweighted_natural_classes
-    density_unweighted_natural_classes = arcpy.sa.Reclassify(in_raster=density_uneweighted_, reclass_field="VALUE", remap="1 876.921569 1;876.921569 1807.588235 2;1807.588235 2847.745098 3;2847.745098 4106.882353 4;4106.882353 5749.235294 5;5749.235294 13961 6", missing_values="DATA")
-    density_unweighted_natural_classes.save(Reclassify_Density_Natural_Breaks)
-
+    with arcpy.EnvManager(extent="-61.003634125 -19.913289462 -60.280541677 -19.325354588 GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]]", outputCoordinateSystem="PROJCS["WGS_1984_UTM_Zone_18S",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",500000.0],PARAMETER["False_Northing",10000000.0],PARAMETER["Central_Meridian",-75.0],PARAMETER["Scale_Factor",0.9996],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]"):
+        arcpy.management.GenerateTessellation(Output_Feature_Class=GenerateTessellation, Extent="-67.7200854859564 -33.8686498677971 -55.7623294678306 -17.54059819585 GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]", Shape_Type="SQUARE", Size="100 SquareKilometers", Spatial_Reference="PROJCS[\"WGS_1984_UTM_Zone_18S\",GEOGCS[\"GCS_WGS_1984\",DATUM[\"D_WGS_1984\",SPHEROID[\"WGS_1984\",6378137.0,298.257223563]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"False_Easting\",500000.0],PARAMETER[\"False_Northing\",10000000.0],PARAMETER[\"Central_Meridian\",-75.0],PARAMETER[\"Scale_Factor\",0.9996],PARAMETER[\"Latitude_Of_Origin\",0.0],UNIT[\"Meter\",1.0]];-5120900 1900 10000;-100000 10000;-100000 10000;0.001;0.001;0.001;IsHighPrecision")
 
     # Process: Copy Grid (Copy Features) (management)
     Grid_dynamics_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\ClaimTiming.gdb\\Grid"
-    arcpy.management.CopyFeatures(in_features=GenerateTessellation, out_feature_class=Grid_dynamics_, config_keyword="", spatial_grid_1=None, spatial_grid_2=None, spatial_grid_3=None)
+    arcpy.management.CopyFeatures(in_features=Grid, out_feature_class=Grid_dynamics_, config_keyword="", spatial_grid_1=None, spatial_grid_2=None, spatial_grid_3=None)
 
     # Process: Polyline to Raster - Timing (Polyline to Raster) (conversion)
     dem_claim_timing_raster = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\ClaimTiming.gdb\\dem_YOD"
@@ -148,13 +75,6 @@ def MetricsGridAggregation():  # Metrics Grid Aggregation
     arcpy.management.Clip(in_raster=yod_MAXIMUM, rectangle="-67.7200854859564 -33.8686498677971 -55.7623294678306 -17.54059819585", out_raster=recent_activity_unclassified_, in_template_dataset=Gran_Chaco_Limit_2_, nodata_value="2147483647", clipping_geometry="ClippingGeometry", maintain_clipping_extent="NO_MAINTAIN_EXTENT")
     recent_activity_unclassified_ = arcpy.Raster(recent_activity_unclassified_)
 
-    # Process: Reclassify - Recent Activity (FC) (Reclassify) (sa)
-    recent_activity_frontier_classes_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\ClaimTiming.gdb\\RecentActivity_FrontierClasses"
-    Reclassify_Recent_Activity_FC_ = recent_activity_frontier_classes_
-    recent_activity_frontier_classes_ = arcpy.sa.Reclassify(in_raster=recent_activity_unclassified_, reclass_field="Value", remap="1986 1994.999900 1;1995 1999.999900 2;2000 2007.999900 3;2008 2014.999900 4;2015 2022 5", missing_values="DATA")
-    recent_activity_frontier_classes_.save(Reclassify_Recent_Activity_FC_)
-
-
     # Process: Reclassify - Recent Activity (2C) (Reclassify) (sa)
     recent_activity_2_classes_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\ClaimTiming.gdb\\RecentActivity_2Classes"
     Reclassify_Recent_Activity_2C_ = recent_activity_2_classes_
@@ -162,12 +82,25 @@ def MetricsGridAggregation():  # Metrics Grid Aggregation
     recent_activity_2_classes_.save(Reclassify_Recent_Activity_2C_)
 
 
-    # Process: Zonal Statistics - Majority (Mask) (Zonal Statistics) (sa)
-    mask_field_other_aggregate_10km = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\FieldOtherMask_Agg10km"
-    Zonal_Statistics_Majority_Mask_ = mask_field_other_aggregate_10km
-    mask_field_other_aggregate_10km = arcpy.sa.ZonalStatistics(in_zone_data=GenerateTessellation, zone_field="GRID_ID", in_value_raster=mask_raster, statistics_type="MAJORITY", ignore_nodata="DATA", process_as_multidimensional="CURRENT_SLICE", percentile_value=90, percentile_interpolation_type="AUTO_DETECT", circular_calculation="ARITHMETIC", circular_wrap_value=360)
-    mask_field_other_aggregate_10km.save(Zonal_Statistics_Majority_Mask_)
+    # Process: Copy Features (Copy Features) (management)
+    Grid_density_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\Grid_density"
+    arcpy.management.CopyFeatures(in_features=Grid, out_feature_class=Grid_density_, config_keyword="", spatial_grid_1=None, spatial_grid_2=None, spatial_grid_3=None)
 
+    # Process: Polyline to Raster - Density (Polyline to Raster) (conversion)
+    dem_footprint_raster = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\dem_footprint_raster"
+    arcpy.conversion.PolylineToRaster(in_features=Demarcations, value_field="DEM", out_rasterdataset=dem_footprint_raster, cell_assignment="MAXIMUM_LENGTH", priority_field="NONE", cellsize="D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Inputs\\LandCover_InputMasks.gdb\\MOSAIC_TCW_yod1985", build_rat="BUILD")
+
+    # Process: Zonal Statistics - Sum (Dem) (Zonal Statistics) (sa)
+    dem_SUM = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\ZonalStats_demSUM"
+    Zonal_Statistics_Sum_Dem_ = dem_SUM
+    dem_SUM = arcpy.sa.ZonalStatistics(in_zone_data=Grid_density_, zone_field="GRID_ID", in_value_raster=dem_footprint_raster, statistics_type="SUM", ignore_nodata="DATA", process_as_multidimensional="CURRENT_SLICE", percentile_value=90, percentile_interpolation_type="AUTO_DETECT", circular_calculation="ARITHMETIC", circular_wrap_value=360)
+    dem_SUM.save(Zonal_Statistics_Sum_Dem_)
+
+
+    # Process: Clip Unweighted Density (Clip Raster) (management)
+    density_uneweighted_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\Density_unweighted"
+    arcpy.management.Clip(in_raster=dem_SUM, rectangle="-67.7200854859564 -33.8686498677971 -55.7623294678306 -17.54059819585", out_raster=density_uneweighted_, in_template_dataset=GranChaco, nodata_value="2147483647", clipping_geometry="ClippingGeometry", maintain_clipping_extent="NO_MAINTAIN_EXTENT")
+    density_uneweighted_ = arcpy.Raster(density_uneweighted_)
 
     # Process: Polyline to Raster - Speed (Polyline to Raster) (conversion)
     dem_speed_raster = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Speed.gdb\\dem_YOD"
@@ -185,81 +118,73 @@ def MetricsGridAggregation():  # Metrics Grid Aggregation
     arcpy.management.Clip(in_raster=yod_STANDARD_DEV, rectangle="-67.7200854859564 -33.8686498677971 -55.7623294678306 -17.54059819585", out_raster=speed_unclassified_, in_template_dataset=Gran_Chaco_Limit_2_, nodata_value="2147483647", clipping_geometry="ClippingGeometry", maintain_clipping_extent="NO_MAINTAIN_EXTENT")
     speed_unclassified_ = arcpy.Raster(speed_unclassified_)
 
-    # Process: Reclassify - Speed (Reclassify) (sa)
-    Speed_natural_classes_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Speed.gdb\\Speed_NaturalClasses"
-    Reclassify_Speed = Speed_natural_classes_
-    Speed_natural_classes_ = arcpy.sa.Reclassify(in_raster=speed_unclassified_, reclass_field="VALUE", remap="0 4.153488 1;4.153489 6.131339 2;6.131340 14 3", missing_values="DATA")
-    Speed_natural_classes_.save(Reclassify_Speed)
+    # Process: Merge (Merge) (management)
+    merged = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\Fields_Other_Merge"
+    arcpy.management.Merge(inputs=[Fields_Polygon, LC_Other_Polygon], output=merged, field_mappings="Id \"Id\" true true false 4 Long 0 0,First,#,Fields_Polygon_Chaco,Id,-1,-1;gridcode \"gridcode\" true true false 4 Long 0 0,First,#,Fields_Polygon_Chaco,gridcode,-1,-1;Shape_Length \"Shape_Length\" false true true 8 Double 0 0,First,#,Fields_Polygon_Chaco,Shape_Length,-1,-1;Shape_Area \"Shape_Area\" false true true 8 Double 0 0,First,#,Fields_Polygon_Chaco,Shape_Area,-1,-1", add_source="NO_SOURCE_INFO")
 
-
-    # Process: Raster Calculator (Raster Calculator) (sa)
-    density_weighted_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\ZonalStats_demSUM_weighted"
-    Raster_Calculator = density_weighted_
-    density_weighted_ = ZonalStats_demSUM *(1+(ZonalStats_masksSUM_CORRECTED / ZonalStats_totalSUM))
-    density_weighted_.save(Raster_Calculator)
-
-
-    # Process: Clip Weighted Density (Clip Raster) (management)
-    density_Weighted = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\Density_weighted"
-    arcpy.management.Clip(in_raster=density_weighted_, rectangle="-67.7200854859564 -33.8686498677971 -55.7623294678306 -17.54059819585", out_raster=density_Weighted, in_template_dataset=Gran_Chaco_Limit, nodata_value="2147483647", clipping_geometry="ClippingGeometry", maintain_clipping_extent="NO_MAINTAIN_EXTENT")
-    density_Weighted = arcpy.Raster(density_Weighted)
-
-    # Process: Reclassify Density - Natural Breaks (2) (Reclassify) (sa)
-    density_unweighted_natural_classes_2_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\Density_Weighted_NaturalClasses"
-    Reclassify_Density_Natural_Breaks_2_ = density_unweighted_natural_classes_2_
-    density_unweighted_natural_classes_2_ = arcpy.sa.Reclassify(in_raster=density_Weighted, reclass_field="VALUE", remap="1.394332 1190.549346 1;1190.549346 2323.077931 2;2323.077931 3568.859375 3;3568.859375 5041.146535 4;5041.146535 7249.577275 5;7249.577275 14441.133789 6", missing_values="DATA")
-    density_unweighted_natural_classes_2_.save(Reclassify_Density_Natural_Breaks_2_)
-
-
-    # Process: Zonal Statistics (Zonal Statistics) (sa)
-    ZonalStats_totalSum_2_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\MetricsAnalysis_model\\BasicMetrics\\Density_Corrected.gdb\\ZonalStats_totalSum"
-    Zonal_Statistics = ZonalStats_totalSum_2_
-    ZonalStats_totalSum_2_ = arcpy.sa.ZonalStatistics(in_zone_data=Grid_density_, zone_field="GRID_ID", in_value_raster=total_raster, statistics_type="SUM", ignore_nodata="DATA", process_as_multidimensional="CURRENT_SLICE", percentile_value=90, percentile_interpolation_type="AUTO_DETECT", circular_calculation="ARITHMETIC", circular_wrap_value=360)
-    ZonalStats_totalSum_2_.save(Zonal_Statistics)
-
+    # Process: Polygon to Raster - Mask (Polygon to Raster) (conversion)
+    mask_raster = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\TotalMask_raster"
+    with arcpy.EnvManager(cellSize=dem_footprint_raster, extent=dem_footprint_raster, snapRaster=dem_footprint_raster):
+        arcpy.conversion.PolygonToRaster(in_features=merged, value_field="gridcode", out_rasterdataset=mask_raster, cell_assignment="CELL_CENTER", priority_field="NONE", cellsize=dem_footprint_raster, build_rat="BUILD")
 
     # Process: Reclassify (Reclassify) (sa)
-    Forest = "D:\\GIS_Chapter1\\Demarcation_analysis\\MetricsAnalysis_model\\BasicMetrics\\Density_Corrected.gdb\\Forest"
-    Reclassify = Forest
-    with arcpy.EnvManager(cellSize="TotalMask_raster", mask="GranChaco"):
-        Forest = arcpy.sa.Reclassify(in_raster=mask_raster, reclass_field="Value", remap="1 0;NODATA 1", missing_values="DATA")
-        Forest.save(Reclassify)
+    ForestMask = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\ForestMask"
+    Reclassify = ForestMask
+    ForestMask = arcpy.sa.Reclassify(in_raster=mask_raster, reclass_field="VALUE", remap="0 1;1 NODATA;NODATA 1", missing_values="DATA")
+    ForestMask.save(Reclassify)
 
+
+    # Process: Clip Raster (2) (Clip Raster) (management)
+    ForestMask_Clip = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\ForestMask_Clip"
+    arcpy.management.Clip(in_raster=ForestMask, rectangle="-67.7200854859564 -33.8686498677971 -55.7623294678306 -17.54059819585", out_raster=ForestMask_Clip, in_template_dataset=GranChaco, nodata_value="", clipping_geometry="ClippingGeometry", maintain_clipping_extent="NO_MAINTAIN_EXTENT")
+    ForestMask_Clip = arcpy.Raster(ForestMask_Clip)
 
     # Process: Zonal Statistics (2) (Zonal Statistics) (sa)
-    ZonalStats_ForestSum = "D:\\GIS_Chapter1\\Demarcation_analysis\\MetricsAnalysis_model\\BasicMetrics\\Density_Corrected.gdb\\ZonalStats_ForestSum"
+    ZonalStats_ForestSum = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\ZonalStats_ForestSum"
     Zonal_Statistics_2_ = ZonalStats_ForestSum
-    ZonalStats_ForestSum = arcpy.sa.ZonalStatistics(in_zone_data=Grid_density_, zone_field="GRID_ID", in_value_raster=Forest, statistics_type="SUM", ignore_nodata="DATA", process_as_multidimensional="CURRENT_SLICE", percentile_value=90, percentile_interpolation_type="AUTO_DETECT", circular_calculation="ARITHMETIC", circular_wrap_value=360)
+    ZonalStats_ForestSum = arcpy.sa.ZonalStatistics(in_zone_data=Grid_density_, zone_field="GRID_ID", in_value_raster=ForestMask_Clip, statistics_type="SUM", ignore_nodata="DATA", process_as_multidimensional="CURRENT_SLICE", percentile_value=90, percentile_interpolation_type="AUTO_DETECT", circular_calculation="ARITHMETIC", circular_wrap_value=360)
     ZonalStats_ForestSum.save(Zonal_Statistics_2_)
 
 
+    # Process: Polygon to Raster - Total (Polygon to Raster) (conversion)
+    total_raster = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\TotalCells_raster"
+    with arcpy.EnvManager(extent=dem_footprint_raster, snapRaster=dem_footprint_raster):
+        arcpy.conversion.PolygonToRaster(in_features=TotalCellsMask, value_field="OBJECTID", out_rasterdataset=total_raster, cell_assignment="CELL_CENTER", priority_field="NONE", cellsize=dem_footprint_raster, build_rat="BUILD")
+
+    # Process: Zonal Statistics (Zonal Statistics) (sa)
+    ZonalStats_totalSum = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\ZonalStats_totalSum"
+    Zonal_Statistics = ZonalStats_totalSum
+    ZonalStats_totalSum = arcpy.sa.ZonalStatistics(in_zone_data=Grid_density_, zone_field="GRID_ID", in_value_raster=total_raster, statistics_type="SUM", ignore_nodata="DATA", process_as_multidimensional="CURRENT_SLICE", percentile_value=90, percentile_interpolation_type="AUTO_DETECT", circular_calculation="ARITHMETIC", circular_wrap_value=360)
+    ZonalStats_totalSum.save(Zonal_Statistics)
+
+
     # Process: Raster Calculator (2) (Raster Calculator) (sa)
-    ProportionForest = "D:\\GIS_Chapter1\\Demarcation_analysis\\metricsanalysis_model\\basicmetrics\\density_corrected.gdb\\ProportionForest"
+    ProportionForest = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\ProportionForest"
     Raster_Calculator_2_ = ProportionForest
-    ProportionForest = "ZonalStats_ForestSum" / "ZonalStats_totalSum"
+    ProportionForest = ZonalStats_ForestSum /  ZonalStats_totalSum
     ProportionForest.save(Raster_Calculator_2_)
 
 
     # Process: Raster Calculator (3) (Raster Calculator) (sa)
-    DensityCorrected = "d:\\gis_chapter1\\demarcation_analysis\\metricsanalysis_model\\basicmetrics\\density_corrected.gdb\\DensityCorrected"
+    DensityCorrected = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\DensityCorrected"
     Raster_Calculator_3_ = DensityCorrected
-    DensityCorrected = "ZonalStats_demSUM" / "ProportionForest"
+    DensityCorrected = dem_SUM /  ProportionForest
     DensityCorrected.save(Raster_Calculator_3_)
 
 
     # Process: Clip Raster (Clip Raster) (management)
-    DensityCorrected_Clip = "D:\\GIS_Chapter1\\Demarcation_analysis\\MetricsAnalysis_model\\BasicMetrics\\Density_Corrected.gdb\\DensityCorrected_Clip"
+    DensityCorrected_Clip = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\DensityCorrected_Clip"
     arcpy.management.Clip(in_raster=DensityCorrected, rectangle="-67.7200854859564 -33.8686498677971 -55.7623294678306 -17.54059819585", out_raster=DensityCorrected_Clip, in_template_dataset=GranChaco, nodata_value="3.4e+38", clipping_geometry="ClippingGeometry", maintain_clipping_extent="NO_MAINTAIN_EXTENT")
     DensityCorrected_Clip = arcpy.Raster(DensityCorrected_Clip)
 
     # Process: Set Null (Set Null) (sa)
-    DensityCorrected_Thresholded2 = "D:\\GIS_Chapter1\\Demarcation_analysis\\MetricsAnalysis_model\\BasicMetrics\\Density_Corrected.gdb\\DensityCorrected_Thresholded2"
-    Set_Null = DensityCorrected_Thresholded2
-    DensityCorrected_Thresholded2 = arcpy.sa.SetNull(in_conditional_raster=DensityCorrected_Clip, in_false_raster_or_constant=DensityCorrected_Clip, where_clause="VALUE > 15000")
-    DensityCorrected_Thresholded2.save(Set_Null)
+    DensityCorrected_Thresholded = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Density.gdb\\DensityCorrected_Thresholded"
+    Set_Null = DensityCorrected_Thresholded
+    DensityCorrected_Thresholded = arcpy.sa.SetNull(in_conditional_raster=DensityCorrected_Clip, in_false_raster_or_constant=DensityCorrected_Clip, where_clause="VALUE > 15000")
+    DensityCorrected_Thresholded.save(Set_Null)
 
 
 if __name__ == '__main__':
     # Global Environment settings
-    with arcpy.EnvManager(scratchWorkspace=r"D:\GIS_Chapter1\Demarcation_analysis\MetricsAnalysis_model\BasicMetrics\Density_Corrected.gdb", workspace=r"D:\GIS_Chapter1\Demarcation_analysis\MetricsAnalysis_model\BasicMetrics\Density_Corrected.gdb"):
+    with arcpy.EnvManager(scratchWorkspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\Metrics\Metrics_2000Filt.gdb", workspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\Metrics\Metrics_2000Filt.gdb"):
         MetricsGridAggregation()
