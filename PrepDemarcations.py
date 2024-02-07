@@ -30,6 +30,7 @@ def PrepDemModel():  # Prep Demarcations Model
     Input_False_Constant_2_ = 1
     LandTrendr_Output = arcpy.Raster("D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Model_inputs\\GEE_LandTrendr_YOD.gdb\\MOSAIC_TCW_yod1985")
     Dem_yod1995_final = "Dem_yod1995_final"
+    dem_YOD1985_finalProj = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj"
 
     # Process: Focal Statistics (Focal Statistics) (ia)
     focalized_land_cover = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Model_intermediaries\\b_Prep_Masks.gdb\\FocalSt_LC"
@@ -37,13 +38,11 @@ def PrepDemModel():  # Prep Demarcations Model
     focalized_land_cover = arcpy.ia.FocalStatistics(in_raster=Land_Cover_Dataset, neighborhood="Rectangle 15 15 CELL", statistics_type="MAJORITY", ignore_nodata="DATA", percentile_value=90)
     focalized_land_cover.save(Focal_Statistics)
 
-
     # Process: Expand Pasture + Cropland (Expand) (sa)
     pasture_cropland_grown = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Model_intermediaries\\b_Prep_Masks.gdb\\Expand_LC"
     Expand_Pasture_Cropland = pasture_cropland_grown
     pasture_cropland_grown = arcpy.sa.Expand(in_raster=focalized_land_cover, number_cells=2, zone_values=[3, 4], expand_method="MORPHOLOGICAL")
     pasture_cropland_grown.save(Expand_Pasture_Cropland)
-
 
     # Process: Reclassify Fields (Reclassify) (3d)
     fields = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Model_intermediaries\\b_Prep_Masks.gdb\\Reclass_ExpandLC"
@@ -353,7 +352,82 @@ def PrepDemModel():  # Prep Demarcations Model
     # Process: Round (3) (Calculate Field) (management)
     rounded_3_ = arcpy.management.CalculateField(in_table=rounded_2_, field="Z_Mean", expression="round(!Z_Mean!)", expression_type="PYTHON3", code_block="", field_type="TEXT", enforce_domains="NO_ENFORCE_DOMAINS")[0]
 
+    # Process: Buffer (Buffer) (analysis)
+    dem_test_Buffer100 = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_test_Buffer100"
+    arcpy.analysis.Buffer(in_features=dem_YOD1985_finalProj, out_feature_class=dem_test_Buffer100, buffer_distance_or_field="100 Meters", line_side="FULL", line_end_type="ROUND", dissolve_option="NONE", dissolve_field=[], method="PLANAR")
+
+    # Process: Dissolve (Dissolve) (management)
+    dem_test_Buffer100_Dissolve = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_test_Buffer100_Dissolve"
+    arcpy.management.Dissolve(in_features=dem_test_Buffer100, out_feature_class=dem_test_Buffer100_Dissolve, dissolve_field=[], statistics_fields=[], multi_part="SINGLE_PART", unsplit_lines="DISSOLVE_LINES", concatenation_separator="")
+
+    # Process: Add Field (2) (Add Field) (management)
+    dem_test_Buffer100_Dissolve_2_ = arcpy.management.AddField(in_table=dem_test_Buffer100_Dissolve, field_name="ID", field_type="LONG", field_precision=None, field_scale=None, field_length=None, field_alias="", field_is_nullable="NULLABLE", field_is_required="NON_REQUIRED", field_domain="")[0]
+
+    # Process: Calculate Field (3) (Calculate Field) (management)
+    dem_test_Buffer100_Dissolve_3_ = arcpy.management.CalculateField(in_table=dem_test_Buffer100_Dissolve_2_, field="ID", expression="!OBJECTID!", expression_type="PYTHON3", code_block="", field_type="TEXT", enforce_domains="NO_ENFORCE_DOMAINS")[0]
+
+    # Process: Spatial Join (Spatial Join) (analysis)
+    dem_test_SpatialJoin = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_test_SpatialJoin"
+    arcpy.analysis.SpatialJoin(target_features=dem_YOD1985_finalProj, join_features=dem_test_Buffer100_Dissolve_3_, out_feature_class=dem_test_SpatialJoin, join_operation="JOIN_ONE_TO_ONE", join_type="KEEP_ALL", field_mapping="FID \"FID\" true true false 4 Long 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj,FID,-1,-1;DEM \"DEM\" true true false 4 Long 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj,DEM,-1,-1;ORIG_FID \"ORIG_FID\" true true false 4 Long 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj,ORIG_FID,-1,-1;Z_Min \"Z_Min\" true true false 8 Double 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj,Z_Min,-1,-1;Z_Max \"Z_Max\" true true false 8 Double 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj,Z_Max,-1,-1;Z_Mean \"Z_Mean\" true true false 8 Double 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj,Z_Mean,-1,-1;DEM_CODE \"DEM_CODE\" true true false 2 Short 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj,DEM_CODE,-1,-1;Z_Min1995 \"Z_Min1995\" true true false 8 Double 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj,Z_Min1995,-1,-1;SHAPE_Length \"SHAPE_Length\" false true true 8 Double 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_finalProj,SHAPE_Length,-1,-1;ID \"ID\" true true false 0 Long 0 0,First,#,D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_test_Buffer100_Dissolve,ID,-1,-1", match_option="INTERSECT", search_radius="", distance_field_name="")
+
+    # Process: Dissolve (2) (Dissolve) (management)
+    dem_test_Unsplit = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_test_Unsplit"
+    arcpy.management.Dissolve(in_features=dem_test_SpatialJoin, out_feature_class=dem_test_Unsplit, dissolve_field=["ID"], statistics_fields=[["DEM", "SUM"]], multi_part="MULTI_PART", unsplit_lines="DISSOLVE_LINES", concatenation_separator="")
+
+    # Process: Copy (4) (Copy) (management)
+    dem_test_Unsplit_copy = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_test_Unsplit_copy"
+    arcpy.management.Copy(in_data=dem_test_Unsplit, out_data=dem_test_Unsplit_copy, data_type="FeatureClass", associated_data=[])
+
+    # Process: Select Layer By Attribute (Select Layer By Attribute) (management)
+    dem_test_Unsplit_Layer, Count = arcpy.management.SelectLayerByAttribute(in_layer_or_view=dem_test_Unsplit, selection_type="NEW_SELECTION", where_clause="SHAPE_Length < 1200", invert_where_clause="")
+
+    # Process: Delete Features (Delete Features) (management)
+    if dem_test_Unsplit_Layer:
+        dem_test_Unsplit_4_ = arcpy.management.DeleteFeatures(in_features=dem_test_Unsplit)[0]
+
+    # Process: Select Layer By Location (Select Layer By Location) (management)
+    if dem_test_Unsplit_Layer:
+        dem_test_2_, Output_Layer_Names, Count_2_ = arcpy.management.SelectLayerByLocation(in_layer=[dem_YOD1985_finalProj], overlap_type="INTERSECT", select_features=dem_test_Unsplit_4_, search_distance="", selection_type="NEW_SELECTION", invert_spatial_relationship="NOT_INVERT")
+
+    # Process: Export Features (Export Features) (conversion)
+    dem_test_filtered = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_test_filtered"
+    if Output_Layer_Names and dem_test_Unsplit_Layer:
+        arcpy.conversion.ExportFeatures(in_features=dem_test_2_, out_features=dem_test_filtered, where_clause="", use_field_alias_as_name="NOT_USE_ALIAS", field_mapping="FID \"FID\" true true false 4 Long 0 0,First,#,dem_YOD1985_finalProj_Layer,FID,-1,-1;DEM \"DEM\" true true false 4 Long 0 0,First,#,dem_YOD1985_finalProj_Layer,DEM,-1,-1;ORIG_FID \"ORIG_FID\" true true false 4 Long 0 0,First,#,dem_YOD1985_finalProj_Layer,ORIG_FID,-1,-1;Z_Min \"Z_Min\" true true false 8 Double 0 0,First,#,dem_YOD1985_finalProj_Layer,Z_Min,-1,-1;Z_Max \"Z_Max\" true true false 8 Double 0 0,First,#,dem_YOD1985_finalProj_Layer,Z_Max,-1,-1;Z_Mean \"Z_Mean\" true true false 8 Double 0 0,First,#,dem_YOD1985_finalProj_Layer,Z_Mean,-1,-1;DEM_CODE \"DEM_CODE\" true true false 2 Short 0 0,First,#,dem_YOD1985_finalProj_Layer,DEM_CODE,-1,-1;Z_Min1995 \"Z_Min1995\" true true false 8 Double 0 0,First,#,dem_YOD1985_finalProj_Layer,Z_Min1995,-1,-1;SHAPE_Length \"SHAPE_Length\" false true true 8 Double 0 0,First,#,dem_YOD1985_finalProj_Layer,SHAPE_Length,-1,-1", sort_field=[])
+
+    # Process: Calculate Field (4) (Calculate Field) (management)
+    if Output_Layer_Names and dem_test_Unsplit_Layer:
+        dem_test_filtered_2_ = arcpy.management.CalculateField(in_table=dem_test_filtered, field="Z_Mean", expression="calc(!Z_Mean!)", expression_type="PYTHON3", code_block="""def calc(X1): 
+    if X1 >= 2020:
+        return 2020
+    else:
+        return X1""", field_type="TEXT", enforce_domains="NO_ENFORCE_DOMAINS")[0]
+
+    # Process: Calculate Field (5) (Calculate Field) (management)
+    if Output_Layer_Names and dem_test_Unsplit_Layer:
+        dem_test_filtered_3_ = arcpy.management.CalculateField(in_table=dem_test_filtered_2_, field="Z_Min", expression="calc(!Z_Min!)", expression_type="PYTHON3", code_block="""def calc(X1): 
+    if X1 >= 2020:
+        return 2020
+    else:
+        return X1""", field_type="TEXT", enforce_domains="NO_ENFORCE_DOMAINS")[0]
+
+    # Process: Calculate Field (6) (Calculate Field) (management)
+    if Output_Layer_Names and dem_test_Unsplit_Layer:
+        dem_test_filtered_4_ = arcpy.management.CalculateField(in_table=dem_test_filtered_3_, field="Z_Max", expression="calc(!Z_Max!)", expression_type="PYTHON3", code_block="""def calc(X1): 
+    if X1 >= 2020:
+        return 2020
+    else:
+        return X1""", field_type="TEXT", enforce_domains="NO_ENFORCE_DOMAINS")[0]
+
+    # Process: Delete Field (2) (Delete Field) (management)
+    if Output_Layer_Names and dem_test_Unsplit_Layer:
+        dem_test_filtered_5_ = arcpy.management.DeleteField(in_table=dem_test_filtered_4_, drop_field=["Z_Min1995"], method="DELETE_FIELDS")[0]
+
+    # Process: Copy (5) (Copy) (management)
+    dem_YOD1985_FILTERED = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\DemCleaning\\Dem_CLEANED.gdb\\dem_YOD1985_FILTERED"
+    if Output_Layer_Names and dem_test_Unsplit_Layer:
+        arcpy.management.Copy(in_data=dem_test_filtered_5_, out_data=dem_YOD1985_FILTERED, data_type="", associated_data=[])
+
 if __name__ == '__main__':
     # Global Environment settings
-    with arcpy.EnvManager(scratchWorkspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\Hotspots_UPDATE.gdb", workspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\Hotspots_UPDATE.gdb"):
+    with arcpy.EnvManager(scratchWorkspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\DemCleaning\Dem_CLEANTest.gdb", workspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\DemCleaning\Dem_CLEANTest.gdb"):
         PrepDemModel()
