@@ -1,20 +1,19 @@
 """
--*- Code to generate claiming metrics from demarcation datase -*-
+-*- Code to generate claiming metrics from demarcation dataset -*-
 
 del Giorgio et al. 
 ArcGIS Pro version 3.0.3
-2023-12-19 15:01:23
 
 5 metrics produced:
-    1. Claiming density (unweighted)
+    1. Claiming density (uncorrected)
     2. Claiming density (corrected)
     3. Peak claiming period
     4. Last claiming activity
     5. Claiming speed
 
 """
+
 import arcpy
-from arcpy.sa import *
 from arcpy.sa import *
 
 def MetricsGridAggregation():  # Metrics Grid Aggregation
@@ -23,8 +22,8 @@ def MetricsGridAggregation():  # Metrics Grid Aggregation
     arcpy.env.overwriteOutput = False
 
     arcpy.ImportToolbox(r"c:\program files\arcgis\pro\Resources\ArcToolbox\toolboxes\Data Management Tools.tbx")
-    Grid = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\MetricsGrid.gdb\\Grid"
-    Demarcations = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Dem_FINAL.gdb\\dem_YOD1985_FILTERED1200"
+    Grid = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Metrics\\BasicMetrics_1500Filt\\MetricsGrid.gdb\\Grid"
+    Demarcations = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\Dem_FINAL.gdb\\dem_YOD1985_FILTERED1500"
     Gran_Chaco_Limit_2_ = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Inputs\\LandCover_InputMasks.gdb\\GranChaco"
     GranChaco = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Inputs\\LandCover_InputMasks.gdb\\GranChaco"
     Fields_Polygon = "D:\\GIS_Chapter1\\Demarcation_analysis\\Outputs\\BasicMetrics\\Inputs\\LandCover_InputMasks.gdb\\Fields_Polygon_Chaco"
@@ -186,5 +185,5 @@ def MetricsGridAggregation():  # Metrics Grid Aggregation
 
 if __name__ == '__main__':
     # Global Environment settings
-    with arcpy.EnvManager(scratchWorkspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\Metrics\Metrics_2000Filt.gdb", workspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\Metrics\Metrics_2000Filt.gdb"):
+    with arcpy.EnvManager(scratchWorkspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\Metrics\Metrics_1500Filt.gdb", workspace=r"D:\GIS_Chapter1\Demarcation_analysis\Outputs\Metrics\Metrics_1500Filt.gdb"):
         MetricsGridAggregation()
