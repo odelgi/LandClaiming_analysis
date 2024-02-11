@@ -78,10 +78,10 @@ The analysis requires that the scripts be run in the following order:
 <img width="896" alt="MetricGridAggregation_DensCorrected" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/034a860c-336a-46e3-86b9-512bf41e9ef0">
 
 6. Assign aggregate pixels to claiming pattern typology
-<img width="744" alt="ClaimingHotspotsModelUPDATE" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/6a01847f-617e-4bed-be92-87238dcfcc43">
+<img width="661" alt="ClaimingHotspotsModelUPDATE" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/b62479a8-7eb9-43e3-b086-7c6548e40dd4">
 
 7. Determine claim pattern clustering using a density-based analysis
-<img width="381" alt="PatternClusters" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/3634e3ec-3bd4-4c03-b0ff-dd1f847470c2">
+<img width="522" alt="PatternClusters" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/5c036226-0e4a-4682-a677-b82dec876e0e">
 
 8. Relate claiming and deforestation metrics
 ![RelatingMetrics_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/d1237ccc-367d-407a-854e-3226f6419042)
