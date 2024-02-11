@@ -55,9 +55,10 @@ The analysis requires that the scripts be run in the following order:
 8. [LinearCorrespondenceAnalysis.py](https://github.com/odelgi/Demarcation_analysis/blob/main/LinearCorrespondenceAnalysis.py) to calculate the linear correspondence between the extracted and reference demarcations.
 9. [ClaimingMetrics_GridAggregation.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingMetrics_GridAggregation.py) to generate claiming metrics from demarcation data.
 10. [ClaimingPatterns.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimingPatterns.py) to assign aggregate pixels to the claiming pattern typology.
-11. [RelatingMetrics.py](https://github.com/odelgi/Demarcation_analysis/blob/main/RelatingMetrics.py) to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable.
-12. [ClaimVsERL_SummaryTables.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimVsERL_SummaryTables.py) to generate summary statistics comparing claiming and deforestation metrics.
-13. [DisappearedPuestosChoropleth.py](https://github.com/odelgi/Demarcation_analysis/blob/main/DisappearedPuestosChoropleth.py) to compare claiming metrics with smallholder puesto disappearance (data from Levers et al. 2021).
+11. [PatternClusters.py](https://github.com/odelgi/Demarcation_analysis/blob/main/PatternClusters.py) to produce clusters from claiming patterns.
+12. [RelatingMetrics.py](https://github.com/odelgi/Demarcation_analysis/blob/main/RelatingMetrics.py) to make claiming metrics and deforestation metrics (Baumann et al. 2022) comparable.
+13. [ClaimVsERL_SummaryTables.py](https://github.com/odelgi/Demarcation_analysis/blob/main/ClaimVsERL_SummaryTables.py) to generate summary statistics comparing claiming and deforestation metrics.
+14. [DisappearedPuestosChoropleth.py](https://github.com/odelgi/Demarcation_analysis/blob/main/DisappearedPuestosChoropleth.py) to compare claiming metrics with smallholder puesto disappearance (data from Levers et al. 2021).
 
 ### Detailed workflow
 
@@ -79,6 +80,9 @@ The analysis requires that the scripts be run in the following order:
 6. Assign aggregate pixels to claiming pattern typology
 <img width="744" alt="ClaimingHotspotsModelUPDATE" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/6a01847f-617e-4bed-be92-87238dcfcc43">
 
+7. Determine claim pattern clustering using a density-based analysis
+<img width="381" alt="PatternClusters" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/3634e3ec-3bd4-4c03-b0ff-dd1f847470c2">
+
 8. Relate claiming and deforestation metrics
 ![RelatingMetrics_MODEL](https://github.com/odelgi/Demarcation_analysis/assets/61065884/d1237ccc-367d-407a-854e-3226f6419042)
 
@@ -96,6 +100,6 @@ None
 * Linear feature detection upscaling [Matthias Baumann](https://github.com/matthias-baumann)
 
 ### Acknowledgments
-We thank S. Schulz and C. Dammann and J. Vacirca for their administrative support.
+We thank S. Schulz, C. Dammann, Tim Elrick, Ruilan Shi and J. Vacirca for their administrative support.
 
 
