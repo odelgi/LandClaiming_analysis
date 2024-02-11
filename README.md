@@ -78,7 +78,7 @@ The analysis requires that the scripts be run in the following order:
 <img width="896" alt="MetricGridAggregation_DensCorrected" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/034a860c-336a-46e3-86b9-512bf41e9ef0">
 
 6. Assign aggregate pixels to claiming pattern typology
-<img width="661" alt="ClaimingHotspotsModelUPDATE" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/b62479a8-7eb9-43e3-b086-7c6548e40dd4">
+<img width="705" alt="ClaimingHotspotsModelUPDATE" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/8ce96581-109a-4870-9a38-cfdbe7c1791c">
 
 7. Determine claim pattern clustering using a density-based analysis
 <img width="522" alt="PatternClusters" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/5c036226-0e4a-4682-a677-b82dec876e0e">
