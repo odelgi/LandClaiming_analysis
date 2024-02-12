@@ -72,7 +72,7 @@ The analysis requires that the scripts be run in the following order:
 <img width="1158" alt="Validation" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/5e0229ba-cb67-4546-b20c-901fc67060b4">
 
 4. Linear correspondence analysis
-<img width="781" alt="LCA" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/a77dc8a4-1673-4cf6-a11f-1c36c85ecabf">
+<img width="1122" alt="LinearCorrespondenceUPDATE" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/c604038c-45b2-4933-9b33-311f928aaeb8">
 
 5. Generate claiming metrics
 <img width="896" alt="MetricGridAggregation_DensCorrected" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/034a860c-336a-46e3-86b9-512bf41e9ef0">
