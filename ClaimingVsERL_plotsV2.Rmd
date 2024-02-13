@@ -1,0 +1,387 @@
+---
+title: "ClaimingVsERL_plots"
+author: "Olivia del Giorgio"
+date: "23/11/2023"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo= FALSE, results = 'asis', message = FALSE)
+knitr::opts_knit$set(root.dir = "D:/GIS_Chapter1/Demarcation_analysis/Outputs/Stats")
+
+# Install and load libraries:
+
+#install.packages("readr")
+#install.packages("wesanderson")
+#install.packages("ggplot2")
+#install.packages("tidyr")
+#install.packages("gdata")
+#install.packages("dplyr")
+
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(gdata)
+library(wesanderson)
+library(RColorBrewer)
+
+
+# Set working directory
+work_dir_data <- "D:/GIS_Chapter1/Demarcation_analysis/Outputs/Stats"
+setwd(work_dir_data)
+getwd()
+
+# Read data
+
+ActivToDens <- read.csv("NearesACTIVtoDens.csv", stringsAsFactors = FALSE, na.strings=c("","NA"))
+data.frame(ActivToDens)
+ActivToDens <- na.omit(ActivToDens)
+
+ActivToDensXCountry <- read.csv("NearesACTIVtoDensXCountry.csv", stringsAsFactors = FALSE, na.strings=c("","NA"))
+data.frame(ActivToDensXCountry)
+ActivToDensXCountry <- na.omit(ActivToDensXCountry)
+
+ActivToPeak <- read.csv("NearesACTIVtoPeak.csv", stringsAsFactors = FALSE, na.strings=c("","NA"))
+data.frame(ActivToPeak)
+ActivToPeak <- na.omit(ActivToPeak)
+
+ActivToPeakXCountry <- read.csv("NearesACTIVtoPeakXCountry.csv", stringsAsFactors = FALSE, na.strings=c("","NA"))
+data.frame(ActivToPeakXCountry)
+ActivToPeakXCountry <- na.omit(ActivToPeakXCountry)
+
+ActivToRecent <- read.csv("NearesACTIVtoRecent.csv", stringsAsFactors = FALSE, na.strings=c("","NA"))
+data.frame(ActivToRecent)
+ActivToRecent <- na.omit(ActivToRecent)
+
+ActivToSpeed <- read.csv("NearesACTIVtoSpeed.csv", stringsAsFactors = FALSE, na.strings=c("","NA"))
+data.frame(ActivToSpeed)
+ActivToSpeed <- na.omit(ActivToSpeed)
+
+ActivToSpeedXCountry <- read.csv("NearesACTIVtoSpeedXCountry.csv", stringsAsFactors = FALSE, na.strings=c("","NA"))
+data.frame(ActivToSpeedXCountry)
+ActivToSpeedXCountry <- na.omit(ActivToSpeedXCountry)
+
+#FastToSpeed <- read.csv("NearesFasttoSpeed.csv", stringsAsFactors = FALSE, na.strings=c("","NA"))
+#data.frame(FastToSpeed)
+#FastToSpeed <- na.omit(FastToSpeed)
+
+OnsetToPeak <- read.csv("NearesOnsettoPeak.csv", stringsAsFactors = FALSE, na.strings=c("","NA"))
+data.frame(OnsetToPeak)
+OnsetToPeak <- na.omit(OnsetToPeak)
+```
+
+## Demarcation analysis **Plots for Claiming to ERL metrics comparison** {-}
+
+Built with R `r getRversion()`
+
+```{r colnames, echo=FALSE}
+
+colnames(ActivToDens)
+colnames(ActivToPeak)
+colnames(ActivToSpeed)
+
+```
+
+```{r densXact, echo=FALSE}
+palette_density = wes_palette("Zissou1", 6, type = "continuous")
+#ActivToDens <- subset(ActivToDens, Density1500_correctedNB5 !=1)
+
+ActivToDens$lower <- (ActivToDens$MEAN_NearestACTIVtoDens_DIST - (ActivToDens$VARIANCE_NearestACTIVtoDens_DIST/2))
+ActivToDens$upper <- (ActivToDens$MEAN_NearestACTIVtoDens_DIST + (ActivToDens$VARIANCE_NearestACTIVtoDens_DIST/2))
+ActivToDens$dens_discrete <- cut(ActivToDens$Density1500_correctedNB5, breaks = 6, labels = c("None", "Very low", "Low", "Medium", "High", "Very high"))
+ 
+DensXAct_plot <- ggplot(data = ActivToDens, aes(x = MEAN_NearestACTIVtoDens_DIST, y = Density1500_correctedNB5, fill = dens_discrete, colour = dens_discrete)) +
+  geom_point(shape=21, size = 4, show.legend = FALSE) +
+  scale_color_manual(values= palette_density) +
+  scale_fill_manual(values= palette_density) +
+  geom_line(aes(group=1), color="grey", show.legend = FALSE) +
+  labs(x ="", 
+       y = "") +
+  theme_minimal() +
+  theme(aspect.ratio = 1,
+    panel.border = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(color = "grey37", size = 12)) +
+  scale_y_continuous(breaks = c(1,2,3,4,5,6), label = c("None", "Very low", "Low", "Medium", "High", "Very high")) +
+  #geom_linerange(aes(xmin = lower, xmax = upper)) +
+  guides(colour="none")
+
+plot(DensXAct_plot)
+```
+
+```{r peakXact, echo=FALSE}
+palette_peak = c("#330099", "#9900CC", "#CC0066", "#FF9933", "#FFCC00")
+
+ActivToPeak$lower <- (ActivToPeak$MEAN_NearestACTIVtoPeak_DIST - (ActivToPeak$VARIANCE_NearestACTIVtoPeak_DIST/2))
+ActivToPeak$upper <- (ActivToPeak$MEAN_NearestACTIVtoPeak_DIST + (ActivToPeak$VARIANCE_NearestACTIVtoPeak_DIST/2))
+ActivToPeak$peak_discrete <- cut(ActivToPeak$PeakPeriod1500_classified, breaks = 5, labels = c("1986-1994", "1995-1999", "2000-2007", "2008-2014", "2015-2020"))
+ 
+PeakXAct_plot <- ggplot(data = ActivToPeak, aes(x = MEAN_NearestACTIVtoPeak_DIST, y = PeakPeriod1500_classified, fill = peak_discrete, colour = peak_discrete)) +
+  geom_point(shape=22, size = 4, show.legend = FALSE) +
+  scale_color_manual(values= palette_peak) +
+  scale_fill_manual(values= palette_peak) +
+  geom_line(aes(group=1), color="grey", show.legend = FALSE) +
+  labs(x ="", 
+       y = "") +
+  theme_minimal() +
+  theme(aspect.ratio = 1,
+    panel.border = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(color = "grey37", size = 12)) +
+  scale_y_continuous(breaks = c(1,2,3,4,5), label = c("1986-1994", "1995-1999", "2000-2007", "2008-2014", "2015-2020")) +
+  #geom_linerange(aes(xmin = lower, xmax = upper)) +
+  guides(colour="none")
+
+plot(PeakXAct_plot)
+```
+
+
+```{r speedXact, echo=FALSE}
+palette_speed = c("#990000","#CC3333","#FF9999")
+
+ActivToSpeed$lower <- (ActivToSpeed$MEAN_NearestACTIVtoSpeed_DIST - (ActivToSpeed$VARIANCE_NearestACTIVtoSpeed_DIST/2))
+ActivToSpeed$upper <- (ActivToSpeed$MEAN_NearestACTIVtoSpeed_DIST + (ActivToSpeed$VARIANCE_NearestACTIVtoSpeed_DIST/2))
+ActivToSpeed$speed_discrete <- cut(ActivToSpeed$Speed1500_NB3, breaks = 3, labels = c("Fast", "Medium", "Slow"))
+  
+SpeedXAct_plot <- ggplot(ActivToSpeed, aes(x = MEAN_NearestACTIVtoSpeed_DIST, y = Speed1500_NB3, fill = speed_discrete, colour = speed_discrete)) +
+  geom_point(shape=24, size = 4, show.legend = FALSE) +
+  scale_color_manual(values= palette_speed) +
+  scale_fill_manual(values= palette_speed) +
+  geom_line(aes(group=1), color="grey", show.legend = FALSE) +
+  labs(x ="", y = "") +
+  theme_minimal() +
+  theme(
+    aspect.ratio = 1,
+    panel.border = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(color = "grey37", size = 12)) +
+  scale_y_continuous(breaks = c(1,2,3), trans = "reverse", label = c("Fast", "Med", "Slow")) +
+  #geom_linerange(aes(xmin = lower, xmax = upper)) +
+  guides(colour="none")
+
+plot(SpeedXAct_plot)
+```
+
+
+```{r densXCountry2, echo=FALSE}
+palette_density = wes_palette("Zissou1", 6, type = "continuous")
+palette_country = c("#009999","#99FFCC","#9999FF")
+
+ActivToDens$lower <- (ActivToDens$MEAN_NearestACTIVtoDens_DIST - (ActivToDens$VARIANCE_NearestACTIVtoDens_DIST/2))
+ActivToDens$upper <- (ActivToDens$MEAN_NearestACTIVtoDens_DIST + (ActivToDens$VARIANCE_NearestACTIVtoDens_DIST/2))
+#ActivToDens$dens_discrete <- cut(ActivToDens$DensityWeighted_NaturalClasses, breaks = 6, labels = c("Extremely low", "Very low", "Low", "Medium", "High", "Extremely high"))
+
+ActivToDensXCountry <- subset(ActivToDensXCountry, name !="BRAZIL")
+#ActivToDensXCountry <- subset(ActivToDensXCountry, Density1500_correctedNB5 !=1) # density classes changed from 1-6, so 1=zero density, 2=very low...
+ActivToDensXCountry$lower <- (ActivToDensXCountry$MEAN_NearestACTIVtoDens_DIST - (ActivToDensXCountry$VARIANCE_NearestACTIVtoDens_DIST/2))
+ActivToDensXCountry$upper <- (ActivToDensXCountry$MEAN_NearestACTIVtoDens_DIST + (ActivToDensXCountry$VARIANCE_NearestACTIVtoDens_DIST/2))
+ActivToDensXCountry$dens_discrete <- cut(ActivToDensXCountry$Density1500_correctedNB5, breaks = 6, labels = c("None", "Very low", "Low", "Medium", "High", "Very high"))
+ 
+DensXActCountry_plot <- ggplot(data = ActivToDensXCountry, aes(x = MEAN_NearestACTIVtoDens_DIST, y = Density1500_correctedNB5, color = as.factor(name))) +
+  geom_line(aes(color=name),size=1.3) +
+  geom_point(aes(x=MEAN_NearestACTIVtoDens_DIST,  fill = factor(dens_discrete), size = FREQUENCY), shape=21, stroke = NA, show.legend = FALSE) +
+  scale_color_manual(values= palette_country) +
+  scale_fill_manual(values= palette_density) +
+  labs(x ="", 
+       y = "") +
+  theme_minimal() +
+  theme(aspect.ratio = 1,
+    panel.border = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(color = "grey37", size = 20),
+    axis.text.x = element_text(color = "grey37", size = 18)) +  
+  scale_y_continuous(breaks = c(1,2,3,4,5,6), label = c("None", "Very low", "Low", "Medium", "High", "Very high")) +
+  #geom_linerange(aes(xmin = lower, xmax = upper), color="#999999") +
+  guides(colour="none") +
+  geom_point(data = ActivToDens,aes(x=MEAN_NearestACTIVtoDens_DIST, size = FREQUENCY), shape=21, alpha = 0.5, color="grey", show.legend = FALSE) +
+  geom_line(data = ActivToDens, aes(group=1), size=1, alpha = 0.5, color="grey", show.legend = FALSE)
+  
+plot(DensXActCountry_plot)
+
+```
+
+```{r peakXactXCountry, echo=FALSE}
+palette_peak = c("#330099", "#9900CC", "#CC0066", "#FF9933", "#FFCC00")
+palette_country = c("#009999","#99FFCC","#9999FF")
+
+ActivToPeak$lower <- (ActivToPeak$MEAN_NearestACTIVtoPeak_DIST - (ActivToPeak$VARIANCE_NearestACTIVtoPeak_DIST/2))
+ActivToPeak$upper <- (ActivToPeak$MEAN_NearestACTIVtoPeak_DIST + (ActivToPeak$VARIANCE_NearestACTIVtoPeak_DIST/2))
+#ActivToPeak$peak_discrete <- cut(ActivToPeak$PeakPeriod_Classified, breaks = 5, labels = c("1986-1994", "1995-1999", "2000-2007", "2008-2014", "2015-2020"))
+
+ActivToPeakXCountry <- subset(ActivToPeakXCountry, name !="BRAZIL")
+ActivToPeakXCountry$lower <- (ActivToPeakXCountry$MEAN_NearestACTIVtoPeak_DIST - (ActivToPeakXCountry$VARIANCE_NearestACTIVtoPeak_DIST/2))
+ActivToPeakXCountry$upper <- (ActivToPeakXCountry$MEAN_NearestACTIVtoPeak_DIST + (ActivToPeakXCountry$VARIANCE_NearestACTIVtoPeak_DIST/2))
+ActivToPeakXCountry$peak_discrete <- cut(ActivToPeakXCountry$PeakPeriod1500_classified, breaks = 5, labels = c("1986-1994", "1995-1999", "2000-2007", "2008-2014", "2015-2020"))
+
+PeakXActCountry_plot <- ggplot(data = ActivToPeakXCountry, aes(x = MEAN_NearestACTIVtoPeak_DIST, y = PeakPeriod1500_classified, color = as.factor(name))) +
+  geom_line(aes(color=name),size=1.3) +
+  geom_point(aes(x=MEAN_NearestACTIVtoPeak_DIST,  fill = factor(peak_discrete), size = FREQUENCY), shape=21, stroke = NA, show.legend = FALSE) +
+  scale_color_manual(values= palette_country) +
+  scale_fill_manual(values= palette_peak) +
+  labs(x ="", 
+       y = "") +
+  theme_minimal() +
+  theme(aspect.ratio = 1,
+    panel.border = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(color = "grey37", size = 20),
+    axis.text.x = element_text(color = "grey37", size = 18)) +  
+  scale_y_continuous(breaks = c(1,2,3,4,5), label = c("1986-1994", "1995-1999", "2000-2007", "2008-2014", "2015-2020")) +
+  #geom_linerange(aes(xmin = lower, xmax = upper), color="#999999") +
+  guides(colour="none") +
+  geom_point(data = ActivToPeak,aes(x=MEAN_NearestACTIVtoPeak_DIST, size = FREQUENCY), shape=21, alpha = 0.5, color="grey", show.legend = FALSE) +
+  geom_line(data = ActivToPeak, aes(group=1), size=1, alpha = 0.5, color="grey", show.legend = FALSE)
+  
+plot(PeakXActCountry_plot)
+```
+
+```{r speedXactXCountry, echo=FALSE}
+
+palette_speed = c("#990000","#CC3333","#FF9999")
+palette_country = c("#009999","#99FFCC","#9999FF") # Argentina= Dark green/blue, Bolivia = Light Turquoise, Paraguay = Light Purple
+
+ActivToSpeed$lower <- (ActivToSpeed$MEAN_NearestACTIVtoSpeed_DIST - (ActivToSpeed$VARIANCE_NearestACTIVtoSpeed_DIST/2))
+ActivToSpeed$upper <- (ActivToSpeed$MEAN_NearestACTIVtoSpeed_DIST + (ActivToSpeed$VARIANCE_NearestACTIVtoSpeed_DIST/2))
+#ActivToSpeed$speed_discrete <- cut(ActivToSpeed$Speed_3Classes, breaks = 3, labels = c("Fast", "Medium", "Slow"))
+  
+ActivToSpeedXCountry <- subset(ActivToSpeedXCountry, name !="BRAZIL")
+ActivToSpeedXCountry$lower <- (ActivToSpeedXCountry$MEAN_NearestACTIVtoSpeed_DIST - (ActivToSpeedXCountry$VARIANCE_NearestACTIVtoSpeed_DIST/2))
+ActivToSpeedXCountry$upper <- (ActivToSpeedXCountry$MEAN_NearestACTIVtoSpeed_DIST + (ActivToSpeedXCountry$VARIANCE_NearestACTIVtoSpeed_DIST/2))
+ActivToSpeedXCountry$speed_discrete <- cut(ActivToSpeedXCountry$Speed1500_NB3, breaks = 3, labels = c("Fast", "Medium", "Slow"))
+
+SpeedXActCountry_plot <- ggplot(data = ActivToSpeedXCountry, aes(x = MEAN_NearestACTIVtoSpeed_DIST, y = Speed1500_NB3, color = as.factor(name))) +
+  geom_line(aes(color=name),size=1.3, show.legend = FALSE) +
+  geom_point(aes(x=MEAN_NearestACTIVtoSpeed_DIST,  fill = factor(speed_discrete), size = FREQUENCY), shape=21, stroke = NA, show.legend = FALSE) +
+  scale_color_manual(values= palette_country) +
+  scale_fill_manual(values= palette_speed) +
+  labs(x ="", 
+       y = "") +
+  theme_minimal() +
+  theme(aspect.ratio = 1,
+    panel.border = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(color = "grey37", size = 20),
+    axis.text.x = element_text(color = "grey37", size = 18)) +  
+  scale_y_continuous(breaks = c(1,2,3), trans = "reverse", label = c("Fast", "Med", "Slow")) +
+  #geom_linerange(aes(xmin = lower, xmax = upper), color="#999999") +
+  guides(colour="none") +
+  geom_point(data = ActivToSpeed,aes(x=MEAN_NearestACTIVtoSpeed_DIST, size = FREQUENCY), shape=21, alpha = 0.5, color="grey", show.legend = FALSE) +
+  geom_line(data = ActivToSpeed, aes(group=1), size=1, alpha = 0.5, color="grey", show.legend = FALSE)
+  
+plot(SpeedXActCountry_plot)
+```
+```{r exportplots, echo=FALSE}
+ggsave(plot = DensXActCountry_plot, height=7, width=10, dpi = 300, filename = "DensXActCountry_plot.jpg")
+ggsave(plot = PeakXActCountry_plot, height=7, width=10, dpi = 300, filename = "PeakXActCountry_plot.jpg")
+ggsave(plot = SpeedXActCountry_plot, height=7, width=10, dpi = 300, filename = "SpeedXActCountry_plot.jpg")
+```
+
+
+```{r speedXspeedXCountry, echo=FALSE}
+
+palette_speed = c("#990000","#CC3333","#FF9999")
+palette_country = c("#009999","#99FFCC","#9999FF") # Argentina= Dark green/blue, Bolivia = Light Turquoise, Paraguay = Light Purple
+
+FastToSpeed <- subset(FastToSpeed, name !="BRAZIL")
+FastToSpeed$lower <- (FastToSpeed$MEAN_NearestFASTtoSpeed_DIST - (FastToSpeed$VARIANCE_NearestFASTtoSpeed_DIST/2))
+FastToSpeed$upper <- (FastToSpeed$MEAN_NearestFASTtoSpeed_DIST + (FastToSpeed$VARIANCE_NearestFASTtoSpeed_DIST/2))
+FastToSpeed$speed_discrete <- cut(FastToSpeed$Speed_3Classes, breaks = 3, labels = c("Fast", "Medium", "Slow"))
+
+FastToSpeed_plot <- ggplot(data = FastToSpeed, aes(x = MEAN_NearestFASTtoSpeed_DIST, y = Speed_3Classes, color = as.factor(name))) +
+  geom_line(aes(color=name),size=1.3, show.legend = FALSE) +
+  geom_point(aes(x=MEAN_NearestFASTtoSpeed_DIST,  fill = factor(speed_discrete), size = FREQUENCY), shape=21, stroke = NA, show.legend = FALSE) +
+  scale_color_manual(values= palette_country) +
+  scale_fill_manual(values= palette_speed) +
+  labs(x ="", 
+       y = "") +
+  theme_minimal() +
+  theme(aspect.ratio = 1,
+    panel.border = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(color = "grey37", size = 12)) +
+  scale_y_continuous(breaks = c(1,2,3), trans = "reverse", label = c("Fast", "Med", "Slow")) +
+  geom_linerange(aes(xmin = lower, xmax = upper), color="#999999") +
+  guides(colour="none")
+  
+plot(FastToSpeed_plot)
+```
+
+```{r colnames, echo=FALSE}
+
+colnames(OnsetToPeak)
+
+```
+
+```{r ONSETxONSETXCountry, echo=FALSE}
+palette_peak = c("#330099", "#9900CC", "#CC0066", "#FF9933", "#FFCC00")
+palette_country = c("#009999","#99FFCC","#9999FF")
+
+OnsetToPeak <- subset(OnsetToPeak, name !="BRAZIL")
+OnsetToPeak$lower <- (OnsetToPeak$MEAN_NearestONSETtoPeak_DIST - (OnsetToPeak$VARIANCE_NearestONSETtoPeak_DIST/2))
+OnsetToPeak$upper <- (OnsetToPeak$MEAN_NearestONSETtoPeak_DIST + (OnsetToPeak$VARIANCE_NearestONSETtoPeak_DIST/2))
+OnsetToPeak$peak_discrete <- cut(OnsetToPeak$PeakPeriod1500_classified, breaks = 5, labels = c("1986-1994", "1995-1999", "2000-2007", "2008-2014", "2015-2020"))
+
+PeakXONSET_plot <- ggplot(data = OnsetToPeak, aes(x = MEAN_NearestONSETtoPeak_DIST, y = PeakPeriod1500_classified, color = as.factor(name))) +
+  geom_line(aes(color=name),size=1.3) +
+  geom_point(aes(x=MEAN_NearestONSETtoPeak_DIST,  fill = factor(peak_discrete), size = FREQUENCY), shape=21, stroke = NA, show.legend = FALSE) +
+  scale_color_manual(values= palette_country) +
+  scale_fill_manual(values= palette_peak) +
+  labs(x ="", 
+       y = "") +
+  theme_minimal() +
+  theme(aspect.ratio = 1,
+    panel.border = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(color = "grey37", size = 20),
+    axis.text.x = element_text(color = "grey37", size = 18)) +
+  scale_y_continuous(breaks = c(1,2,3,4,5), label = c("1986-1994", "1995-1999", "2000-2007", "2008-2014", "2015-2020")) +
+  #geom_linerange(aes(xmin = lower, xmax = upper), color="#999999") +
+  guides(colour="none")
+  
+plot(PeakXONSET_plot)
+```
+
+```{r colnames2, echo=FALSE}
+
+colnames(ActivToRecent)
+
+```
+
+```{r activTOrecent, echo=FALSE}
+
+palette_recent = c("#99CCFF", "#FF9933")
+palette_country = c("#009999","#99FFCC","#9999FF")
+
+ActivToRecent <- subset(ActivToRecent, name !="BRAZIL")
+ActivToRecent$lower <- (ActivToRecent$MEAN_NearestACTIVtoRecent_DIST - (ActivToRecent$VARIANCE_NearestACTIVtoRecent_DIST/2))
+ActivToRecent$upper <- (ActivToRecent$MEAN_NearestACTIVtoRecent_DIST + (ActivToRecent$VARIANCE_NearestACTIVtoRecent_DIST/2))
+ActivToRecent$recent_discrete <- cut(ActivToRecent$RecentActivity1500_2Classes2016, breaks = 2, labels = c("1986-2015", "2016-2020"))
+
+RecentXACTIV_plot <- ggplot(data = ActivToRecent, aes(y = MEAN_NearestACTIVtoRecent_DIST, x = name, group=RecentActivity1500_2Classes2016, fill=factor(RecentActivity1500_2Classes2016), label=MEAN_NearestACTIVtoRecent_DIST)) +
+  geom_col(stat= "identity",  position=position_dodge(), show.legend = FALSE) +
+  coord_flip() +
+  scale_y_continuous(expand = c(0, 0, .05, 0)) +
+  scale_x_discrete() +
+  scale_fill_manual(values=palette_recent) +
+  labs(x ="", 
+       y = "") +
+  theme_minimal() +
+  theme(aspect.ratio = 1,
+#    panel.border = element_blank(), 
+    panel.grid.minor = element_blank(),
+    axis.text.y = element_text(color = "grey37", size = 20),
+    axis.text.x = element_text(color = "grey37", size = 18)) +
+#  scale_y_continuous(breaks = c(1,2), label = c("1986-2015", "2016-2020")) +
+  #geom_linerange(aes(xmin = lower, xmax = upper), color="#999999") +
+  guides(colour="none")
+  
+plot(RecentXACTIV_plot)
+
+```
+
+```{r exportplots2, echo=FALSE}
+#ggsave(plot = FastToSpeed_plot, height=7, width=5, dpi = 300, filename = "FastToSpeed_plot.jpg")
+ggsave(plot = PeakXONSET_plot, height=7, width=10, dpi = 300, filename = "PeakXONSET_plot.jpg")
+ggsave(plot = RecentXACTIV_plot, height=7, width=10, dpi = 300, filename = "RecentXACTIV_plot.jpg")
+```
