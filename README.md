@@ -1,7 +1,7 @@
 # An approach to map land claiming in agricultural commodity frontiers
 
 This repository accompanies the following peer-reviewed publication: 
-[del Giorgio O., Baumann M., Kuemmerle T., le Polain de Waroux Y. (2024) Revealing land control dynamics in emerging agricultural frontiers. Submitted to: PNAS](Link).
+[del Giorgio O., Baumann M., Kuemmerle T., and le Polain de Waroux Y. (2024) Revealing land control dynamics in emerging agricultural frontiers. Submitted to: PNAS](Link).
 
 ## Project description
 The continued expansion of agricultural commodity production into the world’s tropical and subtropical forests represents one of the greatest threats to Earth system functioning and adds to the harms affecting the world’s most vulnerable. With corporate and governmental accountability still lacking in many regions, monitoring these expanding frontiers of resource appropriation is essential. Specifically, detecting where land is being staked out for commodity production offers the possibility of a better understanding of the early phases of frontier development and allows for a more accurate and timely targeting of interventions and enforcement, prior to the occurrence of large-scale deforestation. Yet, for many commodity frontiers, information on land deals, agricultural rents, and deforestation permits is unavailable, not uncommonly due to the concealment of official registries and the illegal nature of land acquisitions.
@@ -96,6 +96,13 @@ The analysis requires that the scripts be run in the following order:
 
 10. Generate hexagonal grid over which to compare the claiming metrics and the proportion of smallholder puestos disappeared by 2018
 <img width="784" alt="DisappearedPuestosChoropleth" src="https://github.com/odelgi/Demarcation_analysis/assets/61065884/59f9094c-e522-4c5b-9337-fd19fde344bf">
+
+### Example outputs
+![SI_OutputComparisons](https://github.com/odelgi/Demarcation_analysis/assets/61065884/59ea4cd6-8bf5-4cf8-88f9-8a7ccf340d93)
+Figure 1. Example of analysis outputs across the Gran Chaco. The left-most column shows the raw, raster output produced from the linear feature detection analysis; the middle column shows the forest demarcations polylines, post- landcover masking and cleaning; and the right-most column shows the same polylines but coloured by each segment’s assigned year of detection.
+
+![SI_BasemapComparedDems](https://github.com/odelgi/Demarcation_analysis/assets/61065884/dc2ce11d-0338-4891-9c09-188f17ac7359)
+Figure 2. Comparison of the detected forest demarcations (right column) to high resolution imagery for each corresponding area (left column).
 
 ### Updates since peer-reviewed article publication
 None
