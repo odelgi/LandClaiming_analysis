@@ -1,6 +1,4 @@
-# Demarcation_analysis
-
-## An approach to map land claiming in agricultural commodity frontiers
+# An approach to map land claiming in agricultural commodity frontiers
 
 This repository accompanies the following peer-reviewed publication: 
 [del Giorgio O., Baumann M., Kuemmerle T., le Polain de Waroux Y. (2024) Revealing land control dynamics in emerging agricultural frontiers. Submitted to: PNAS](Link).
