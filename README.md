@@ -3,12 +3,15 @@
 ## An approach to map land claiming in agricultural commodity frontiers
 
 This repository accompanies the following peer-reviewed publication: 
-[del Giorgio O., Baumann M., Kuemmerle T., le Polain de Waroux Y. (2024) Revealing land control dynamics in emerging agricultural frontiers!. Submitted to: PNAS](Link).
+[del Giorgio O., Baumann M., Kuemmerle T., le Polain de Waroux Y. (2024) Revealing land control dynamics in emerging agricultural frontiers. Submitted to: PNAS](Link).
 
 ## Project description
 The continued expansion of agricultural commodity production into the world’s tropical and subtropical forests represents one of the greatest threats to Earth system functioning and adds to the harms affecting the world’s most vulnerable. With corporate and governmental accountability still lacking in many regions, monitoring these expanding frontiers of resource appropriation is essential. Specifically, detecting where land is being staked out for commodity production offers the possibility of a better understanding of the early phases of frontier development and allows for a more accurate and timely targeting of interventions and enforcement, prior to the occurrence of large-scale deforestation. Yet, for many commodity frontiers, information on land deals, agricultural rents, and deforestation permits is unavailable, not uncommonly due to the concealment of official registries and the illegal nature of land acquisitions.
+
 The growing availability of high-resolution satellite imagery as well as increased data handling capabilities has now opened the door to the detection of proxies for land processes which ground data is often unavailable for. We made use of these to develop a remote-sensing approach to map land claiming activity occurring in forested areas prospected for agricultural commodity production. 
+
 Our approach offers a template for the mapping of land-control indicators across large geographic extents. The focus on image morphology, rather than purely on spectral signal, makes the method modulable to differently shaped features and to higher or lower resolution input imagery. It is thus transferable to different global contexts where the specific land control change indicator will necessarily differ. 
+
 Additionally, for the Gran Chaco, the approach provides a rapid and dependable way to continue monitoring land claiming in the region going forward. 
    
 #### Approach summary
