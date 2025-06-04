@@ -1,7 +1,7 @@
 # An approach to map land claiming in agricultural commodity frontiers
 
 This repository accompanies the following peer-reviewed publication: 
-[del Giorgio O., Baumann M., Kuemmerle T., and le Polain de Waroux Y. (2025) Revealing land control dynamics in emerging agricultural frontiers. Published in: PNAS](Link).
+[del Giorgio O., Baumann M., Kuemmerle T., and le Polain de Waroux Y. (2025) Revealing land control dynamics in emerging agricultural frontiers. Published in: PNAS](https://www.pnas.org/doi/10.1073/pnas.2407916122).
 
 ## Project description
 The continued expansion of agricultural commodity production into the world’s tropical and subtropical forests represents one of the greatest threats to Earth system functioning and adds to the harms affecting the world’s most vulnerable. With corporate and governmental accountability still lacking in many regions, monitoring these expanding frontiers of resource appropriation is essential. Specifically, detecting where land is being staked out for commodity production offers the possibility of a better understanding of the early phases of frontier development and allows for a more accurate and timely targeting of interventions and enforcement, prior to the occurrence of large-scale deforestation. Yet, for many commodity frontiers, information on land deals, agricultural rents, and deforestation permits is unavailable, not uncommonly due to the concealment of official registries and the illegal nature of land acquisitions.
